@@ -2,16 +2,18 @@ import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';  // Import MongoMemoryServer
 import ProductModel from './productModel.js';  // Import ProductModel  
 import CartModel from './cartModel.js';
+import UserModel from './userModel.js';
 
 const runTest = async () => {
     // Setup in-memory MongoDB
     const mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
-    await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(mongoUri, { useUnifiedTopology: true });
 
     // Create an instance of ProductModel
     const productModel = new ProductModel();
     const cartModel = new CartModel();
+    const userModel = new UserModel();
 
     // Data to test
     const productData = {
@@ -23,28 +25,40 @@ const runTest = async () => {
         imageUrl: 'http://example.com/image.jpg'
     };
 
+    const userData = {
+        name: 'John Doe',
+        email: 'johndoe@gmail.com',
+        password: 'password',
+        phone: '1234567890',
+    };
+
+    let createdUser;
+    try {
+        // create a new user
+        createdUser = await userModel.create(userData);
+        console.log('Created User:', createdUser);
+    } catch (error) {
+        console.error('Error during test:', error);
+    }
+    
+    let createdProduct;
+    try {
+        // Create a new product
+        createdProduct = await productModel.create(productData);
+        console.log('Created Product:', createdProduct);
+    } catch (error) {
+        console.error('Error during test:', error);
+    }
+
     const cartData = { 
-        userId: '1234567890',
+        userId: createdUser._id,
         products: [
             {
-                productId: '123456789012',
+                productId: createdProduct._id,
                 quantity: 2
             }
         ]
     };
-
-    try {
-        // Create a new product
-        const createdProduct = await productModel.create(productData);
-        console.log('Created Product:', createdProduct);
-    } catch (error) {
-        console.error('Error during test:', error);
-    } finally {
-        // Cleanup
-        await mongoose.disconnect();
-        await mongoServer.stop();
-    }
-
     try {
         // Create a new cart
         const createdCart = await cartModel.create(cartData);
@@ -52,9 +66,9 @@ const runTest = async () => {
     } catch (error) {
         console.error('Error during test:', error);
     } finally {
-        // Cleanup
+        // Stop the MongoDB server
         await mongoose.disconnect();
-        await mongoServer.stop();
+        await mongoServer.stop();  // Stop the in-memory MongoDB server
     }
 };
 
