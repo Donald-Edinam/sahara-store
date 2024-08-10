@@ -11,7 +11,9 @@ class BaseModel {
             const item = new this.model(data);
             return await item.save();
         } catch (error) {
-            throw new Error(`Error creting item: ${error.message}`);
+            throw new Error(`Error creating item: ${error.message}`);
         }
     }
 }
+
+export default BaseModel;
