@@ -1,14 +1,32 @@
+import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
+
 class MongoConnection {
     constructor() {
-        this.dbUrl = process.env.MONGO_URL;
-        this.client = new MongoClient(this.dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
-        this.client.connect();
+        const port = process.env.dbPORT || 27017;
+        const host = process.env.dbHOST || 'localhost';
+        this.dbUrl = `mongodb://${host}:${port}/afrimart`
+        this.connect();
+    }
+
+    connect() {
+        mongoose.connect(this.dbUrl, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        })
+        .then(() => {
+            console.log('Database connected successfully');
+        })
+        .catch(err => {
+            console.error('Database connection failed:', err.message);
+            process.exit(1);  // Exit the process if connection fails
+        });
     }
 
     isAlive() {
-        return !!this.client && !!this.client.topology && this.client.topology.isConnected();
+        return mongoose.connection.readyState === 1; // Check if connection is connected
     }
 }
 
-const dbClient = new DBClient();
+const dbClient = new MongoConnection();
 export default dbClient;
