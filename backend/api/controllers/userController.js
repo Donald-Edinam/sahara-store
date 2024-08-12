@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 const userModel = new UserModel();
 
-export const registerUser = async (req, res) => {
+/* export const registerUser = async (req, res) => {
     try {
         const { name, email, password, role, phone } = req.body;
 
@@ -40,9 +40,9 @@ export const registerUser = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Error registering user', error: error.message });
     }
-};
+}; */
 
-export const loginUser = async (req, res) => {
+/* export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -72,7 +72,7 @@ export const loginUser = async (req, res) => {
         res.status(500).json({ message: 'Error logging in user', error: error.message });
     }
 };
-
+ */
 export const getUserProfile = async (req, res) => {
     try {
         const userId = req.user.userId; // Assuming you have a middleware to extract the userId from JWT
