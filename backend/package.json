@@ -1,0 +1,22 @@
+{
+  "name": "afrimart-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.5.2"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^10.0.0",
+    "nodemon": "^3.1.4"
+  }
+}
