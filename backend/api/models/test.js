@@ -37,6 +37,9 @@ const runTest = async () => {
         // create a new user
         createdUser = await userModel.create(userData);
         console.log('Created User:', createdUser);
+
+        const user = await userModel.getUserByEmail(createdUser.email);
+        console.log('User by email:', user);
     } catch (error) {
         console.error('Error during test:', error);
     }

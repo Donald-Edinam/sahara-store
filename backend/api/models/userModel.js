@@ -36,6 +36,10 @@ class UserModel extends BaseModel {
         };
         super(schemaDefinition, 'User');
     }
+
+    async getUserByEmail(email) {
+        return await this.model.findOne({ email }); // Find user by email
+    }
 }
 
 export default UserModel;
