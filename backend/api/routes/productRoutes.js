@@ -1,19 +1,14 @@
 import express from 'express';
-import {
-    getAllProducts,
-    getProductById,
-    createProduct,
-    updateProduct,
-    deleteProduct
-} from '../controllers/productController';
+import ProductController from '../controllers/productController.js';
+import { authenticateToken, authorizeRole } from '../../auth/middleware/authMiddleware.js';
 
-const router = express.Router();
+const productRouter = express.Router();
 
 // Defining the routes
-router.post('/', createProduct);
-router.get('/', getAllProducts);
-router.get('/:id', getProductById);
-router.put('/:id', updateProduct);
-router.delete('/:id', deleteProduct);
+productRouter.post('/products', authenticateToken, authorizeRole, ProductController.createProduct);
+productRouter.get('/products', ProductController.getAllProducts);
+productRouter.get('product/:id', ProductController.getProductById);
+productRouter.put('product/:id', authenticateToken, authorizeRole, ProductController.updateProduct);
+productRouter.delete('product/:id', ProductController.deleteProduct);
 
-export default router;
+export default productRouter;

@@ -3,12 +3,14 @@ import cartRouter from './api/routes/cartRoutes.js';
 import dotenv from 'dotenv';
 import dbClient from './config/dbConfig.js';
 import authRouter from './auth/routes/authRoutes.js';
+import productRouter from './api/routes/productRoutes.js';
 
 dotenv.config();
 
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use('/api', cartRouter);
+app.use('/api', productRouter)
 /* app.use('/api', userRouter); */
 app.use('/auth', authRouter);
 

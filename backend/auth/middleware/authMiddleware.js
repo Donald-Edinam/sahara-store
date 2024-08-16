@@ -12,3 +12,10 @@ export const authenticateToken = (req, res, next) => {
         next();
     });
 };
+
+export const authorizeRole = (req, res, next) => {
+    if (['Seller', 'Admin'].includes(req.user.role)) {
+        return res.status(403).json({ message: 'Unauthorized access' });
+    }
+    next();
+}

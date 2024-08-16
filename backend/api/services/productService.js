@@ -1,29 +1,58 @@
-import ProductModel from '../models/productModel';
+import ProductModel from '../models/productModel.js';
+
+const productModel = new ProductModel();
 
 class productService {
-
-    async getAllProducts() {
-        const products = await ProductModel.findAll();
+    static async getAllProducts() {
+        const products = await productModel.findAll();
         return products;
     }
 
-    async getProductById(productId) {
-        const product = await ProductModel.findById(productId);
+    static async getProductById(productId) {
+        const product = await productModel.findById(productId);
         return product;
     }
 
-    async createProduct(productData) {
-        const product = await ProductModel.create(productData);
+    static async createProduct(productData) {
+        const { name, price, description, category, stock} = productData;
+        if (!name || !price || !description || !category || !stock) {
+            throw new Error('All fields are required');
+        }
+
+        let product;
+        try {
+            product = await productModel.create(productData);
+        } catch (error) {
+            throw new Error(error.message);
+        }
         return product;
     }
 
-    async updateProduct(productId, updateData) {
-        const updatedProduct = await ProductModel.updateById(productId, updateData);
+    static async updateProduct(productId, updateData) {
+        if (!productId) {
+            throw new Error('Product ID is required');
+        }
+
+        if (!updateData || Object.keys(updateData).length < 1) {
+            throw new Error('Update data is required');
+        }
+
+        let updatedProduct;
+        try {
+            updatedProduct = await productModel.update(productId, updateData);
+        } catch (error) {
+            throw new Error(error.message);
+        }
+
+        if (stock in updatedProduct) {
+            delete updatedProduct.role;
+        }
+
         return updatedProduct;
     }
 
-    async deleteProduct(productId) {
-        const deletedProduct = await ProductModel.deleteById(productId);
+    static async deleteProduct(productId) {
+        const deletedProduct = await productModel.deleteById(productId);
         return deletedProduct;
     }
 }

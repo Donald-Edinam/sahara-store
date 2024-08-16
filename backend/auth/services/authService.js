@@ -19,7 +19,6 @@ class AuthService {
             throw new Error(error.message);
         }
        const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Generate JWT token 
-       console.log(newUser)
        return { user: { id: newUser._id, name: newUser.name, email: newUser.email, role: newUser.role }, token }; // Return user and token data
     }
 
@@ -37,7 +36,6 @@ class AuthService {
             throw new Error('Password is needed to login');
         }
        const user = await userModel.getUserByEmail(email);
-       console.log(user);
        if (!user) {
         throw new Error("User with Email does not exist")
        }
