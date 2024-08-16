@@ -21,7 +21,7 @@ const ProductCategory = () => {
             {/* Responsive flexbox for SecondCategoryCard */}
             <div className="flex flex-wrap items-center mt-10 justify-center gap-5">
                 {dummyData.slice(0, 2).map((data, index) => (
-                    <SecondCategoryCard key={index} className="flex-1 min-w-[250px] max-w-[300px]" />
+                    <SecondCategoryCard key={index} />
                 ))}
             </div>
         </div>
