@@ -24,7 +24,7 @@ class MongoConnection {
     }
 
     isAlive() {
-        return mongoose.connection.readyState === 1; // Check if connection is connected
+        return mongoose.connection.readyState === 1; // Check if connection is still alive
     }
 }
 
