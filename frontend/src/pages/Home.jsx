@@ -1,8 +1,9 @@
 import React from 'react'
 import Hero from '../components/layout/Hero'
-import ProductHeader from '../components/home/ProductHeader'
 import ProductCategory from './homepage/ProductCategory'
 import ProductListing from './ProductListing'
+import FeaturedCarousel from '../components/home/FeaturedCarousel'
+import Footer from '../components/layout/Footer'
 
 const Home = () => {
   return (
@@ -10,6 +11,8 @@ const Home = () => {
       <Hero />
       <ProductCategory />
       <ProductListing />
+      <FeaturedCarousel />
+      <Footer />
     </>
   )
 }

@@ -1,16 +1,17 @@
 // stripeConfig.js
 
 import Stripe from 'stripe';
+import dotenv from 'dotenv';
 
 // Load environment variables from .env file
-import dotenv from 'dotenv';
 dotenv.config();
 
+// Initialize Stripe with your secret key and API version
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2023-08-14', // Update to the latest Stripe API version as needed
+  apiVersion: '2023-08-14', // Keep this up to date with the latest Stripe API version
 });
 
-// set other configuration settings
+// Additional Stripe configuration settings
 const stripeConfig = {
   currency: 'usd', // Default currency for transactions
   paymentMethods: ['card'], // Default payment methods

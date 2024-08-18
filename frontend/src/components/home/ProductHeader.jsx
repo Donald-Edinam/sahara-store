@@ -6,7 +6,7 @@ const ProductHeader = ({ heading = "Top", description = "Info" }) => {
 
   return (
     <>
-      <div className="bg-base-100 py-4 px-6 flex mt-10 justify-between items-center border-neutral">
+      <div className="bg-base-100 py-4 px-6 w-full flex mt-10 justify-between items-center border-neutral">
         <div>
           <h2 className="text-sm font-medium uppercase text-neutral">{heading}</h2>
           <h1 className="text-2xl font-serif font-bold">{description}</h1>
