@@ -1,4 +1,5 @@
 import express from 'express';
+import session from 'express-session';
 import cartRouter from './api/routes/cartRoutes.js';
 import dotenv from 'dotenv';
 import dbClient from './config/dbConfig.js';
@@ -9,8 +10,17 @@ dotenv.config();
 
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
+app.use(session({
+    secret: '878iwndhjj0wi2nsjmj102oefhsjlweld',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { 
+        maxAge: 1000 * 60 * 60 * 24 * 7// 24 hours
+    }
+}));
 app.use('/api', cartRouter);
 app.use('/api', productRouter)
+app.use('/cart', cartRouter);
 /* app.use('/api', userRouter); */
 app.use('/auth', authRouter);
 

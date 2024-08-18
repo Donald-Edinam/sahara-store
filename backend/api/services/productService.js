@@ -4,8 +4,12 @@ const productModel = new ProductModel();
 
 class productService {
     static async getAllProducts() {
-        const products = await productModel.findAll();
-        return products;
+        try {
+            const products = await productModel.findAll();
+            return products;
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 
     static async getProductById(productId) {
@@ -44,8 +48,8 @@ class productService {
             throw new Error(error.message);
         }
 
-        if (stock in updatedProduct) {
-            delete updatedProduct.role;
+        if (stock in updatedData && updatedProduct.stock < 1) {
+            CartService.cascadeDeleteProduct(productId);
         }
 
         return updatedProduct;
