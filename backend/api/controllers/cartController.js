@@ -6,7 +6,7 @@ class CartController {
         try {
             let cart;
             if (req.user) {
-                 cart = await cartService.getCartByUserId(req.user.userId);
+                 cart = await cartService.getCartByUserId(req.body.userId);
             } else {
                  cart = req.session.cart || [];
             }
