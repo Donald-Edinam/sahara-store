@@ -1,9 +1,6 @@
 import React from "react";
 
 const ProductHeader = ({ heading = "Top", description = "Info" }) => {
-
-  console.log("info", heading, description)
-
   return (
     <>
       <div className="bg-base-100 py-4 px-6 w-full flex mt-10 justify-between items-center border-neutral">
