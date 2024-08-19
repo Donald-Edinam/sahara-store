@@ -12,14 +12,14 @@ const ProductListing = () => {
 
   console.log("products" , products) 
 
-  const dummyData = [1,2,3]
+  const dummyData = products.slice(10,13)
 
   return (
     <section className="min-h-[100vh] p-4">
       <ProductHeader heading="trending" description="Top Products" />
       <div className="flex flex-wrap items-center mt-10 justify-center gap-6">
-        {dummyData.map((item, index) => (
-          <MainProductCard key={index} />
+        {dummyData.map((product, index) => (
+          <MainProductCard key={index} product={product}/>
         ))}
       </div>
     </section>
