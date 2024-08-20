@@ -4,7 +4,7 @@ import { authenticateToken, authorizeRole } from '../../auth/middleware/authMidd
 
 const cartRouter = express.Router();
 
-cartRouter.get('/carts', authenticateToken, authorizeRole, CartContoller.getCart);
+cartRouter.get('/cart', authenticateToken, authorizeRole, CartContoller.getCart);
 cartRouter.post('/carts', authenticateToken, authorizeRole, CartContoller.addToCart);
 cartRouter.get('cart/:id', CartContoller.getCart);
 
