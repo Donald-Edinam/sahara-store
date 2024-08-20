@@ -8,5 +8,7 @@ cartRouter.get('/cart', authenticateToken, authorizeRole, CartContoller.getCart)
 cartRouter.post('/carts', authenticateToken, authorizeRole, CartContoller.addToCart); // Handles Adding and updating cart
 cartRouter.delete('/carts/:productId', authenticateToken, authorizeRole, CartContoller.removeFromCart);
 cartRouter.delete('/carts', authenticateToken, authorizeRole, CartContoller.clearCart); // Clears the whole cart. should be used carefully
+cartRouter.post('/carts', authenticateToken, authorizeRole, CartContoller.addToCart);
+cartRouter.get('cart/:id', CartContoller.getCart);
 
 export default cartRouter;
