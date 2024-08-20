@@ -1,3 +1,4 @@
+import e from 'express';
 import jwt from 'jsonwebtoken';
 
 export const authenticateToken = (req, res, next) => {
@@ -21,14 +22,19 @@ export const optionalAuthenticateToken = (req, res, next) => {
         jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
             if (err) return res.sendStatus(403); // Invalid token
             req.user = user;
+            next();
         });
+    } else {
+        next();
     }
-    next(); // Continue even if no token is provided
+    
 };
 
 export const authorizeRole = (req, res, next) => {
-    if (['Seller', 'Admin'].includes(req.user.role)) {
-        return res.status(403).json({ message: 'Unauthorized access' });
+    if (req.user) {
+        if (['Seller', 'Admin'].includes(req.user.role)) {
+            return res.status(403).json({ message: 'Unauthorized access' });
+        }
     }
     next();
 }

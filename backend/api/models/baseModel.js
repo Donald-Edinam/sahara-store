@@ -66,6 +66,18 @@ class BaseModel {
             throw new Error(`Error deleting item: ${error.message}`);
         }
     }
+
+    async find(searchQuery) {
+        if (!searchQuery && typeof searchQuery !== 'object') {
+            throw new Error('Invalid search query');
+        }
+
+        try {
+            return await this.model.find(searchQuery);
+        } catch (error) {
+            throw new Error(`Error finding items: ${error.message}`);
+        }
+    }
 }
 
 export default BaseModel;

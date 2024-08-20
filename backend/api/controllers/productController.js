@@ -43,6 +43,7 @@ class ProductController {
             }
             res.json(updatedProduct);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: error.message });
         }
     }
@@ -54,6 +55,15 @@ class ProductController {
                 return res.status(404).json({ message: 'Product not found' });
             }
             res.json({ message: 'Product deleted' });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    static async getProductsByCategory(req, res) {
+        try {
+            const products = await productService.getProductsByCategory(req.params.category);
+            res.json(products);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

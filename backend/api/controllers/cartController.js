@@ -12,6 +12,7 @@ class CartController {
                  cart = req.session.cart || [];
             }
             res.json(cart);
+            return
         } catch (error) {
             console.log(error);
             res.status(500).json({ messages: error.message });
@@ -20,26 +21,25 @@ class CartController {
 
     static async addToCart(req, res) {
         try {
+            const { productId, quantity } = req.body;
             if (req.user) {
-                const updatedCart = await cartService.addProductToCart(req.user.userId, req.body);
+                const updatedCart = await cartService.addProductToCart(req.user.userId, { productId, quantity });
                 res.json(updatedCart);
-                res.end();
             } else {
                 if (!req.session.cart) {
                     req.session.cart = [];
                 }
 
+                console.log({ productId, quantity });
                 const productIndex = req.session.cart.findIndex(product => product.productId === productId);
                 if (productIndex === -1) {
-                    req.session.cart.push(req.body);
+                    req.session.cart.push({ productId, quantity: parseInt(quantity) });
                 } else {
                     req.session.cart[productIndex].quantity += quantity;
                 }
 
                 res.json(req.session.cart);
-                res.end();
-            }
-           
+            }     
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: error.message });

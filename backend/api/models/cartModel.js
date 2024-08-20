@@ -8,8 +8,11 @@ class CartModel extends BaseModel {
             userId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
-                required: true
-            },
+                required: true,
+                unique: true,
+                index: true
+            }
+                ,
             products: [
                 {
                     productId: {

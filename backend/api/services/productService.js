@@ -1,4 +1,5 @@
 import ProductModel from '../models/productModel.js';
+import cartService from './cartService.js';
 
 const productModel = new ProductModel();
 
@@ -6,15 +7,19 @@ class productService {
     static async getAllProducts() {
         try {
             const products = await productModel.findAll();
-            return products;
+            return products.filter(product => product.stock > 0);
         } catch (error) {
             throw new Error(error.message);
         }
     }
 
     static async getProductById(productId) {
-        const product = await productModel.findById(productId);
-        return product;
+        try {
+            const product = await productModel.findById(productId);
+            return product;
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 
     static async createProduct(productData) {
@@ -48,16 +53,30 @@ class productService {
             throw new Error(error.message);
         }
 
-        if (stock in updatedData && updatedProduct.stock < 1) {
-            CartService.cascadeDeleteProduct(productId);
+        if ("stock" in updateData && updatedProduct.stock < 1) {
+            await cartService.cascadeDeleteProduct(productId);
         }
 
         return updatedProduct;
     }
 
     static async deleteProduct(productId) {
-        const deletedProduct = await productModel.deleteById(productId);
-        return deletedProduct;
+        try {
+            const deletedProduct = await productModel.delete(productId);
+            await cartService.cascadeDeleteProduct(productId);
+            return deletedProduct;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    static async getProductsByCategory(searchQuery) {
+        try {
+            const products = await productModel.find({ category: searchQuery });
+            return products.filter(product => product.stock > 0);
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 }
 

@@ -126,9 +126,11 @@ class CartService {
 
         // Get all carts that contain the product
         const carts = await cartModel.findByProductId(productId);
-        for (cart of carts) {
+        console.log("cart", carts);
+        const objectId = new mongoose.Types.ObjectId(productId);
+        for (const cart of carts) {
             // Remove the product from the cart
-            cart.products = cart.products.filter(product => product.productId !== productId);
+            cart.products = cart.products.filter(product => !product.productId.equals(objectId));
             await cart.save();
         }
     }
