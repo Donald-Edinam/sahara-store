@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 import HeroImg from "../../assets/Hero-img-0.png"
 import Button from '../common/Button'
 
@@ -18,7 +18,7 @@ const Hero = () => {
                         experience the rich diversity of African culture at your fingertips.
                     </p>
                     <Button variant="secondary" size="md">
-                        Shop Now
+                       <a href={"#categories"}>Shop Now</a>
                     </Button>
                 </div>
             </div>

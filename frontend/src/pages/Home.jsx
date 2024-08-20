@@ -7,13 +7,13 @@ import Footer from '../components/layout/Footer'
 
 const Home = () => {
   return (
-    <>
+    <div className='home'>
       <Hero />
       <ProductCategory />
       <ProductListing />
       <FeaturedCarousel />
       <Footer />
-    </>
+    </div>
   )
 }
 

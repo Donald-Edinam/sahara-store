@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ProductHeader from './ProductHeader';
+import { ProductContext } from '../../context/ProductContext';
+import { Link } from 'react-router-dom';
 
 const FeaturedCarousel = () => {
-  const slides = [
-    { id: 1, image: "https://dummyimage.com/600x400/333/fff&text=Product+1" },
-    { id: 2, image: "https://dummyimage.com/600x400/333/fff&text=Product+2" },
-    { id: 3, image: "https://dummyimage.com/600x400/333/fff&text=Product+3" },
-    { id: 4, image: "https://dummyimage.com/600x400/333/fff&text=Product+4" }
-  ];
-
+  const { products } = useContext(ProductContext);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const handlePrevSlide = () => {
-    setCurrentSlide(currentSlide === 0 ? slides.length - 1 : currentSlide - 1);
+  const featuredProducts = products.slice(10, 14);
+
+  const handlePrevSlide = (e) => {
+    e.preventDefault();
+    setCurrentSlide(currentSlide === 0 ? featuredProducts.length - 1 : currentSlide - 1);
   };
 
-  const handleNextSlide = () => {
-    setCurrentSlide(currentSlide === slides.length - 1 ? 0 : currentSlide + 1);
+  const handleNextSlide = (e) => {
+    e.preventDefault();
+    setCurrentSlide(currentSlide === featuredProducts.length - 1 ? 0 : currentSlide + 1);
   };
 
   return (
@@ -27,20 +27,34 @@ const FeaturedCarousel = () => {
           className="flex transition-transform duration-700 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
-          {slides.map((slide) => (
-            <div key={slide.id} className="min-w-full flex-shrink-0">
-              <img
-                src={slide.image}
-                className="w-full h-full object-cover rounded-lg"
-                alt={`Slide ${slide.id}`}
-              />
+          {featuredProducts.map((product) => (
+            <div key={product.id} className="min-w-full flex-shrink-0">
+              <Link 
+                to={`/product/${product.id}`}
+                className="block w-full h-full"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={product.images[0]}
+                  className="w-full h-[550px] object-cover rounded-lg"
+                  alt={`Product ${product.id}`}
+                />
+              </Link>
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 flex justify-between items-center px-4">
-          <button onClick={handlePrevSlide} className="btn btn-circle bg-white text-black border-none shadow-md">❮</button>
-          <button onClick={handleNextSlide} className="btn btn-circle bg-white text-black border-none shadow-md">❯</button>
-        </div>
+        <button 
+          onClick={handlePrevSlide} 
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 btn btn-circle bg-white text-black border-none shadow-md z-20"
+        >
+          ❮
+        </button>
+        <button 
+          onClick={handleNextSlide} 
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 btn btn-circle bg-white text-black border-none shadow-md z-20"
+        >
+          ❯
+        </button>
       </div>
     </section>
   );
