@@ -6,19 +6,15 @@ import { ProductContext } from '../context/ProductContext'
 
 const ProductListing = () => {
 
-
-
   const { products } = useContext(ProductContext);
-
-  console.log("products" , products) 
-
-  const dummyData = products.slice(10,13)
+  // console.log("products" , products) 
+    const listedProducts = products.slice(10,13)
 
   return (
     <section className="min-h-[100vh] p-4">
       <ProductHeader heading="trending" description="Top Products" />
       <div className="flex flex-wrap items-center mt-10 justify-center gap-6">
-        {dummyData.map((product, index) => (
+        {listedProducts.map((product, index) => (
           <MainProductCard key={index} product={product}/>
         ))}
       </div>

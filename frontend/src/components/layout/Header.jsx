@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import CartButton from '../common/CartButton';
 import SearchForm from '../common/SearchForm';
 import LogoMain from '../../assets/Logo_main.png'
 
 const Header = () => {
     const [isSidenavOpen, setIsSidenavOpen] = useState(false);
+
+    const navigate = useNavigate();
 
     const toggleSidenav = () => {
         setIsSidenavOpen(!isSidenavOpen);
@@ -51,7 +53,7 @@ const Header = () => {
                                     </ul>
                                 </details>
                             </li>
-                            <li>
+                            <li onClick={() => navigate("/cart")}>
                                 <CartButton />
                             </li>
                         </ul>
