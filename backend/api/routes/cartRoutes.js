@@ -6,7 +6,7 @@ const cartRouter = express.Router();
 
 cartRouter.get('/carts', authenticateToken, authorizeRole, CartContoller.getCart);
 cartRouter.post('/carts', authenticateToken, authorizeRole, CartContoller.addToCart);
-cartRouter.get('cart/:id', CartContoller.;
+cartRouter.get('cart/:id', CartContoller.getCart);
 
 
 export default cartRouter;
