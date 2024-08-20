@@ -13,7 +13,7 @@ export const ProductProvider = ({ children }) => {
         const retrieveProducts = async () => {
             try {
                 setLoading(true);
-                const newProducts = await fetchProducts(); // Wait for the promise to resolve
+                const newProducts = await axios.get("http://localhost:3000/api/products"); // Wait for the promise to resolve
                 console.log("Fetched products:", newProducts); // Log the resolved data
                 setProducts(newProducts); // Set the data to state
             } catch (err) {

@@ -7,7 +7,7 @@ const FeaturedCarousel = () => {
   const { products } = useContext(ProductContext);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const featuredProducts = products.slice(10, 14);
+  const featuredProducts = products;
 
   const handlePrevSlide = (e) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ const FeaturedCarousel = () => {
           className="flex transition-transform duration-700 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
-          {featuredProducts.map((product) => (
+          {/* {featuredProducts.map((product) => (
             <div key={product.id} className="min-w-full flex-shrink-0">
               <Link 
                 to={`/product/${product.id}`}
@@ -41,7 +41,7 @@ const FeaturedCarousel = () => {
                 />
               </Link>
             </div>
-          ))}
+          ))} */}1
         </div>
         <button 
           onClick={handlePrevSlide} 
