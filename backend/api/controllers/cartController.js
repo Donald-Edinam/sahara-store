@@ -6,7 +6,8 @@ class CartController {
         try {
             let cart;
             if (req.user) {
-                 cart = await cartService.getCartByUserId(req.body.userId);
+                console.log(req.user);
+                 cart = await cartService.getCartByUserId(req.user.userId);
             } else {
                  cart = req.session.cart || [];
             }
@@ -45,18 +46,37 @@ class CartController {
         }
     }
 
-    static async updateCartItem(req, res) {
+   static async removeFromCart(req, res) {
         try {
-            const updatedCart = await cartService.updateCartItem(req.user.id, req.params.productId, req.body.quantity);
+            let updatedCart;
+            if (req.user) {
+                updatedCart = await cartService.removeFromCart(req.user.userId, req.params.productId);
+            } else {
+                if (!req.session.cart) {
+                    req.session.cart = [];
+                }
+
+                const productIndex = req.session.cart.findIndex(product => product.productId === productId);
+                if (productIndex !== -1) {
+                    req.session.cart.splice(productIndex, 1);
+                }
+                updatedCart = req.session.cart;
+            }
             res.json(updatedCart);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
     }
 
-   static async removeFromCart(req, res) {
+    static async clearCart(req, res) {
         try {
-            const updatedCart = await cartService.removeFromCart(req.user.id, req.params.productId);
+            let updatedCart;
+            if (req.user) {
+                updatedCart = await cartService.removeAllProducts(req.user.userId);
+            } else {
+                req.session.cart = [];
+                updatedCart = req.session.cart;
+            }
             res.json(updatedCart);
         } catch (error) {
             res.status(500).json({ message: error.message });

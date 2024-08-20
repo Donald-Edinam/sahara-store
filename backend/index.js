@@ -9,6 +9,7 @@ import productRouter from './api/routes/productRoutes.js';
 dotenv.config();
 
 const app = express();
+app.set('json spaces', 2); // Pretty-print JSON responses
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(session({
     secret: '878iwndhjj0wi2nsjmj102oefhsjlweld',
@@ -18,6 +19,7 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 * 7// 24 hours
     }
 }));
+
 app.use('/api', cartRouter);
 app.use('/api', productRouter)
 app.use('/cart', cartRouter);

@@ -62,3 +62,4 @@ class productService {
 }
 
 export default productService;
+export { productModel }

@@ -1,6 +1,6 @@
 import CartModel from "../models/cartModel.js";
 import mongoose from "mongoose";
-
+import { productModel } from "./productService.js";
 const cartModel = new CartModel();
 
 class CartService {
@@ -11,9 +11,26 @@ class CartService {
             throw new Error('User ID, Product ID, and Quantity are required');
         }
 
-        // Get the user's cart
+        const product = await productModel.findById(productId);
+        if (!product) {
+            throw new Error('Product not found');
+        }
+
         let cart = await cartModel.findByUserId(userId);
-        console.log(cart)
+        let existingQuantity = 0;
+    
+        if (cart) {
+            // Check if the product already exists in the cart
+            const productInCart = cart.products.find(p => p.productId.equals(productId));
+            if (productInCart) {
+                existingQuantity = productInCart.quantity;
+            }
+        }
+
+        if (product.stock < parseInt(quantity, 10) + existingQuantity) {
+            throw new Error('Insufficient stock');
+        }
+
         if (!cart) {
             // Create a new cart if the user doesn't have one
             cart = await cartModel.create({ userId, products: [{ productId, quantity }] });
@@ -67,6 +84,39 @@ class CartService {
         });
 
         return { total, quantity };
+    }
+
+    async removeFromCart(userId, productId) {
+        if (!userId || !productId) {
+            throw new Error('User ID and Product ID are required');
+        }
+
+        const cart = await cartModel.findByUserId(userId);
+        if (!cart) {
+            throw new Error('Cart not found');
+        }
+
+        const ObjectId = new mongoose.Types.ObjectId(productId);
+        const products = cart.products.filter(product => !product.productId.equals(ObjectId));
+        cart.products = products;
+        await cart.save();
+        return cart;
+    }
+
+    async removeAllProducts(userId) {
+        // Clear the user's cart
+        if (!userId) {
+            throw new Error('User ID is required');
+        }
+
+        const cart = await cartModel.findByUserId(userId);
+        if (!cart) {
+            throw new Error('Cart not found');
+        }
+
+        cart.products = [];
+        await cart.save();
+        return cart;
     }
 
     async cascadeDeleteProduct(productId) {
