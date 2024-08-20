@@ -5,11 +5,17 @@ import dotenv from 'dotenv';
 import dbClient from './config/dbConfig.js';
 import authRouter from './auth/routes/authRoutes.js';
 import productRouter from './api/routes/productRoutes.js';
+import cors from "cors"
+
 
 dotenv.config();
 
 const app = express();
+<<<<<<< HEAD
 app.set('json spaces', 2); // Pretty-print JSON responses
+=======
+app.use(cors());
+>>>>>>> fb79c03 (staged changes)
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(session({
     secret: '878iwndhjj0wi2nsjmj102oefhsjlweld',
