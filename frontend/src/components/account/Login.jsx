@@ -1,31 +1,62 @@
 import React, { useContext, useState } from 'react';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const { user, loading, loginUser } = useContext(AuthContext);
+  const { userState, loading, loginUser } = useContext(AuthContext);
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Email validation
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Email is invalid';
+    }
+
+    // Password validation
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 4) {
+      newErrors.password = 'Password must be at least 8 characters long';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
+
     try {
-      const credentials = { email, password };
-      await loginUser(credentials);
-      if(user) {
-          navigate("/");
+      await loginUser({ email, password });
+      if (userState) {
+        toast.success(user.message);
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
+
+          window.location.reload();
       }
-      console.log('Login successful:', user);
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Login failed', error);
+      toast.error(error);
     }
   };
 
   return (
     <div className="flex justify-center items-center min-h-[87vh] p-6 bg-base-200">
+      <Toaster />
       <div className="card w-full max-w-md bg-base-100 shadow-xl p-8">
         <h2 className="text-2xl font-bold mb-6 font-serif text-center">Sign In to Enjoy the Goodies!</h2>
         <form onSubmit={handleSubmit}>
@@ -40,6 +71,7 @@ const Login = () => {
               className="input input-bordered w-full"
               required
             />
+            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
           </div>
           <div className="form-group mb-4">
             <label htmlFor="password" className="block text-lg font-medium mb-2">Password:</label>
@@ -52,6 +84,7 @@ const Login = () => {
               className="input input-bordered w-full"
               required
             />
+            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
           </div>
           <button type="submit" className="btn btn-secondary w-full">Login</button>
 

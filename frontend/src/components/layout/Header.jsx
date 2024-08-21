@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import CartButton from '../common/CartButton';
-import SearchForm from '../common/SearchForm';
-import LogoMain from '../../assets/Logo_main.png'
+import { AuthContext } from '../../context/AuthProvider';
+import LogoMain from '../../assets/Logo_main.png';
 
 const Header = () => {
     const [isSidenavOpen, setIsSidenavOpen] = useState(false);
-
+    const { userState, logoutUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const toggleSidenav = () => {
         setIsSidenavOpen(!isSidenavOpen);
+    };
+
+    const handleLogout = () => {
+        logoutUser();
+        navigate('/');
     };
 
     return (
@@ -19,12 +24,12 @@ const Header = () => {
                 <div className="navbar flex justify-around items-center p-2 w-full">
                     
                     {/* Logo and Hamburger Menu for Mobile */}
-                    <div className="flex items-center justify-between sm:w-1/2 " >
+                    <div className="flex items-center justify-between sm:w-1/2">
                         <Link to="/" className="w-1/3">
                             <img
-                            className='' 
-                            src={LogoMain} 
-                            alt="Sahara Store's Logo" />
+                                className='' 
+                                src={LogoMain} 
+                                alt="Sahara Store's Logo" />
                         </Link>
                         <div className="sm:hidden flex items-center">
                             <button onClick={toggleSidenav} className="btn btn-ghost text-xl">
@@ -38,7 +43,7 @@ const Header = () => {
 
                     {/* Desktop Search Form */}
                     <div className="hidden sm:block sm:w-auto">
-                        <SearchForm />
+                        {/* <SearchForm /> */}
                     </div>
 
                     {/* Desktop Navigation Menu */}
@@ -46,10 +51,20 @@ const Header = () => {
                         <ul className="menu menu-horizontal flex-nowrap px-1 gap-4">
                             <li>
                                 <details>
-                                    <summary className='cursor-pointer'>Account</summary>
+                                    <summary className='cursor-pointer'>
+                                        {userState ? `Account (${userState.email})` : 'Account'}
+                                    </summary>
                                     <ul className="bg-base-100 rounded-t-none p-2">
-                                        <li><Link to="/login">Login</Link></li>
-                                        <li><Link to="/signup">Sign Up</Link></li>
+                                        {!userState ? (
+                                            <>
+                                                <li><Link to="/login">Login</Link></li>
+                                                <li><Link to="/signup">Sign Up</Link></li>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <li><button onClick={handleLogout}>Logout</button></li>
+                                            </>
+                                        )}
                                     </ul>
                                 </details>
                             </li>
@@ -70,11 +85,17 @@ const Header = () => {
                         </svg>
                     </button>
                     <div className="p-4">
-                        <SearchForm /> {/* Search form inside the sidenav */}
+                        {/* <SearchForm /> Search form inside the sidenav */}
                     </div>
                     <ul className="menu p-4">
-                        <li><Link to="/login" className="block px-4 py-2">Login</Link></li>
-                        <li><Link to="/signup" className="block px-4 py-2">Sign Up</Link></li>
+                        {!userState ? (
+                            <>
+                                <li><Link to="/login" className="block px-4 py-2">Login</Link></li>
+                                <li><Link to="/signup" className="block px-4 py-2">Sign Up</Link></li>
+                            </>
+                        ) : (
+                            <li><button onClick={handleLogout} className="block px-4 py-2">Logout</button></li>
+                        )}
                     </ul>
                 </div>
             </div>
