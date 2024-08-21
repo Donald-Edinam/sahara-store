@@ -24,14 +24,14 @@ class PaymentController {
         }
     }
 
-    static async webhook(req, res) {
+    static async webHook(req, res) {
         try {
             const { status, tx_ref, amount, currency, email } = req.body;
 
             // processing logic example
             if (status === 'successful') {
                 console.log(`Payment successful for transaction reference: ${tx_ref}`);
-                // perform actions based on the successful payment
+                t// perform actions based on the successful payment
                 // For example: await PaymentService.updatePaymentStatus(tx_ref, 'successful');
             } else {
                 console.log(`Payment status: ${status} for transaction reference: ${tx_ref}`);

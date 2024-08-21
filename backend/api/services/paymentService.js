@@ -21,7 +21,48 @@ class PaymentService {
         };
         try {
             const response = await flw.Charge.card(payload);
-            return(response);
+            
+            // Handle PIN authorization
+            if (response.meta.authorization.mode === 'pin') {
+                let payload2 = { ...payload, authorization: { mode: "pin", pin: 3310 }};
+                const reCallCharge = await flw.Charge.card(payload2);
+    
+                // Add the OTP to authorize the transaction
+                const callValidate = await flw.Charge.validate({
+                    otp: "12345",
+                    flw_ref: reCallCharge.data.flw_ref
+                });
+                console.log(callValidate);
+                return callValidate;
+            }
+            
+            // Handle Redirect authorization
+            if (response.meta.authorization.mode === 'redirect') {
+                const url = response.meta.authorization.redirect;
+                console.log(`Redirect to URL: ${url}`);
+                return { message: "Redirect to complete payment", redirect_url: url };
+            }
+            
+            // Handle AVS NoAuth (Address Verification)
+            if (response.meta.authorization.mode === 'avs_noauth') {
+                const payload2 = {
+                    ...payload,
+                    authorization: {
+                        mode: 'avs_noauth',
+                        city: "Ota",
+                        address: "10, Olubunmi Owa street",
+                        state: 'Ogun',
+                        country: "NG",
+                        zipcode: "110001"
+                    }
+                };
+                const reCallCharge = await flw.Charge.card(payload2);
+                console.log(reCallCharge);
+                return reCallCharge;
+            }
+            
+            console.log(response);
+            return response;
         } catch (error) {
             console.log(error);
             return error;
