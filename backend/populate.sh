@@ -27,7 +27,6 @@ response=$(curl -s -X POST -H "Content-Type: application/json" -d '{"name": "Joh
 if [ -z "$response" ]
 then
     echo "Failed to register user"
-    exit 1
 fi
 
 token=$(echo $response | jq -r '.token')

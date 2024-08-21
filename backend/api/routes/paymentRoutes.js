@@ -1,26 +1,10 @@
-// routes/paymentRoutes.js
-
+// Payment routes - Flutterwave
 import express from 'express';
-import { stripe } from '../config/stripeConfig.js';
+import PaymentController from '../controllers/paymentController.js';
 
-const router = express.Router();
+const paymentRouter = express.Router();
 
-router.post('/create-payment-intent', async (req, res) => {
-  try {
-    const { amount } = req.body; // amount in cents
+paymentRouter.post('/card', PaymentController.payWithCard);
+paymentRouter.post('/webhook', PaymentController.webhook); // Webhook endpoint
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency: 'usd',
-      payment_method_types: ['card'],
-    });
-
-    res.status(200).send({
-      clientSecret: paymentIntent.client_secret,
-    });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
-
-export default router;
+export default paymentRouter;

@@ -11,8 +11,8 @@ class CartController {
             } else {
                  cart = req.session.cart || [];
             }
-            res.json(cart);
-            return
+            res.status(200).json(cart);
+            return;
         } catch (error) {
             console.log(error);
             res.status(500).json({ messages: error.message });
@@ -24,7 +24,7 @@ class CartController {
             const { productId, quantity } = req.body;
             if (req.user) {
                 const updatedCart = await cartService.addProductToCart(req.user.userId, { productId, quantity });
-                res.json(updatedCart);
+                res.status(201).json(updatedCart);
             } else {
                 if (!req.session.cart) {
                     req.session.cart = [];
@@ -38,7 +38,7 @@ class CartController {
                     req.session.cart[productIndex].quantity += quantity;
                 }
 
-                res.json(req.session.cart);
+                res.status(201).json(req.session.cart);
             }     
         } catch (error) {
             console.log(error);
@@ -62,7 +62,7 @@ class CartController {
                 }
                 updatedCart = req.session.cart;
             }
-            res.json(updatedCart);
+            res.status(204).json(updatedCart);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
