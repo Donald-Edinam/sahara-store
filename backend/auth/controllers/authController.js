@@ -8,6 +8,7 @@ class AuthController {
             try {
                 result = await authService.registerUser({ name, email, phone, password, role });
             } catch (error) {
+                console.log(error);
                 res.status(400).json({ message: 'Error registering user', error: error.message});
                 res.end();
                 return;

@@ -5,6 +5,13 @@ import bcrypt from 'bcrypt';
 class AuthService {
     async registerUser(data) {
         const { name, email, phone, password, role } = data;
+        if (!email) {
+            throw new Error('Name is required');
+        }
+        if (!password) {
+            throw new Error('Password is required');
+        }
+
         const existingUser = await UserService.getUserByEmail(email);  // Check if user already exists
         if (existingUser) {
             throw new Error('User already exists');

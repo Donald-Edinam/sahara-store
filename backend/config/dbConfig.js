@@ -3,9 +3,7 @@ import mongoose from 'mongoose';
 
 class MongoConnection {
     constructor() {
-        const port = process.env.dbPORT || 27017;
-        const host = process.env.dbHOST || 'localhost';
-        this.dbUrl = `mongodb://${host}:${port}/afrimart`
+        this.dbUrl = "mongodb+srv://ibrahim:ibra12aji@cluster0.430wd.mongodb.net/Saharastore?retryWrites=true&w=majority&appName=Cluster0";
         this.connect();
     }
 
