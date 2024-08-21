@@ -1,15 +1,33 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductContext } from '../context/ProductContext';
+import axios from 'axios';
+import { API_ROUTE } from '../services/axiosConfig';
 
 const ProductDetails = () => {
-  const params = useParams();
-  const { products } = useContext(ProductContext);
+  const { id } = useParams();
+ // const { products } = useContext(ProductContext);
+  const [product, setProduct] = useState(null);
 
-  console.log("params", params)
+  console.log("params", product)
 
   // Ensure products is an array and find the product with the matching _id
-  const product = Array.isArray(products) ? products.find(p => p._id.toString() === params.id) : null;
+  // const product = Array.isArray(products) ? products.find(p => p._id.toString() === params.id) : null;
+
+  useEffect(() => {
+    const fetchProductById = async () => {
+      try {
+        const response = (await axios.get(`${API_ROUTE}/api/product/${id}`)).data;
+        setProduct(response);
+      } catch (error) {
+        console.error('Error fetching product:', error);
+        // Display an error message to the user
+        setProduct(null);
+      }
+    };
+    fetchProductById();
+  }, [id]);
+
 
   if (!product) {
     return <h1 className='text-center text-2xl mt-10'>Product Not Found</h1>;

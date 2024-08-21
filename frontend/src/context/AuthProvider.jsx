@@ -2,14 +2,14 @@ import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 import { API_ROUTE } from '../services/axiosConfig';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const register = async (userData) => {
+  const registerUser = async (userData) => {
     setLoading(true);
     try {
       const response = await axios.post(`${API_ROUTE}/auth/register`, userData);
@@ -22,10 +22,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (credentials) => {
+  const loginUser = async (credentials) => {
     setLoading(true);
     try {
-      const response = await axios.post('/auth/login', credentials);
+      const response = await axios.post(`${API_ROUTE}/auth/login`, credentials);
       setUser(response.data);
       setError(null);
     } catch (err) {
@@ -40,10 +40,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, register, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, error, registerUser, loginUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);
