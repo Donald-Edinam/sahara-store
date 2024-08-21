@@ -22,7 +22,7 @@ REGISTER_URL="http://localhost:3000/auth/register"
 PRODUCT_URL="http://localhost:3000/api/products"
 
 # Register a user
-response=$(curl -s -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "password": "password", "email": "johndoe28.com", "role": "Admin", "phone": "1234567890"}' $REGISTER_URL)
+response=$(curl -s -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "password": "password", "email": "johndoe28@example.com", "role": "Admin", "phone": "1234567890"}' $REGISTER_URL)
 
 if [ -z "$response" ]
 then
