@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import fetchProducts from '../utils/hooks/fetchProducts';
 import axios from 'axios';
+import { API_ROUTE } from '../services/axiosConfig';
 
 export const ProductContext = createContext();
 
@@ -13,7 +14,7 @@ export const ProductProvider = ({ children }) => {
         const retrieveProducts = async () => {
             try {
                 setLoading(true);
-                const newProducts = await axios.get("http://localhost:3000/api/products"); // Wait for the promise to resolve
+                const newProducts = await axios.get(`${API_ROUTE}/api/products`); // Wait for the promise to resolve
                 console.log("Fetched products:", newProducts); // Log the resolved data
                 setProducts(newProducts); // Set the data to state
             } catch (err) {

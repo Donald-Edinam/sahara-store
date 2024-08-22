@@ -11,7 +11,7 @@ const RegisterForm = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const { user, registerUser } = useContext(AuthContext);
+  const { registerUser, loading, serverError } = useContext(AuthContext);
 
   const validateForm = () => {
     const newErrors = {};
@@ -54,16 +54,15 @@ const RegisterForm = () => {
 
     try {
       const credentials = { name, email, password, phone };
-      await registerUser(credentials);
-      if (user.message === "User registered successfully") {
-        toast.success(user.message);
-        setTimeout(()=> {
-          navigate('/login');
-        }, 1000)
-      }
+      const response = await registerUser(credentials);
+      toast.success("User registered successfully");
+      setTimeout(() => {
+        navigate('/login');
+      }, 1000);
     } catch (error) {
-      console.error('Registration failed:', error);
-      toast.error( "Registration failed!",error);
+      console.error('Registration failed:', error.response);
+      const errorMessage = error.response?.data?.message || "Registration failed";
+      toast.error(errorMessage);
     }
   };
 
@@ -73,7 +72,7 @@ const RegisterForm = () => {
       <div className="card w-full max-w-sm bg-base-100 shadow-xl p-8">
         <form onSubmit={handleRegister}>
           <h2 className="text-2xl font-bold mb-6 font-serif text-center">New Here? Sign Up Now</h2>
-          
+
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2" htmlFor="name">Name</label>
             <input
@@ -87,7 +86,7 @@ const RegisterForm = () => {
             />
             {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
           </div>
-          
+
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2" htmlFor="email">Email</label>
             <input
@@ -101,7 +100,7 @@ const RegisterForm = () => {
             />
             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
           </div>
-          
+
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2" htmlFor="tel">Phone Number</label>
             <input
@@ -115,7 +114,7 @@ const RegisterForm = () => {
             />
             {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
           </div>
-          
+
           <div className="mb-6">
             <label className="block text-sm font-medium mb-2" htmlFor="password">Password</label>
             <input
@@ -129,8 +128,8 @@ const RegisterForm = () => {
             />
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
           </div>
-          
-          <button type="submit" className="btn btn-secondary w-full hover:bg-accent">Sign Up</button>
+
+          <button type="submit" className={`btn btn-secondary w-full ${loading && "btn-disabled"}`}>{loading ? "Signing In..." : "Sign In"}</button>
 
           <div className="container mx-auto mt-3">
             <p className='text-center text-xs'>
