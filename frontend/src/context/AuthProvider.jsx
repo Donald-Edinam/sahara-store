@@ -21,16 +21,25 @@ export const AuthProvider = ({ children }) => {
   }, [userState]);
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [serverError, setError] = useState(null);
 
   const registerUser = async (credentials) => {
     setLoading(true);
     try {
-      const response = await axios.post(`${API_ROUTE}/auth/register`, credentials);
-      setUserState(response.data);
+      console.log('Sending registration data:', credentials);
+      const response = await axios.post(`${API_ROUTE}/auth/register`, credentials, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    
+      
       setError(null);
-    } catch (err) {
-      setError(err.response.data.message);
+      return response.data;
+    } catch (serverError) {
+      console.error('Full server error response:', serverError.response);
+      setError(serverError?.response?.data?.message || "Registration failed");
+      throw serverError;
     } finally {
       setLoading(false);
     }
@@ -44,9 +53,9 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("user", JSON.stringify(response.data.user)); // Store the user data in localStorage
       localStorage.setItem("token", response.data.token); // Store the token in localStorage
       setError(null);
-    } catch (err) {
-      console.error('Login failed', err);
-      setError(err.response?.data?.message); // Update the error state with the `message` property
+    } catch (serverError) {
+      console.error('Login failed', serverError);
+      setError(serverError?.response?.data?.message); // Update the error state with the `message` property
     } finally {
       setLoading(false);
     }
@@ -58,7 +67,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ userState, loading, error, registerUser, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ userState, loading, serverError, registerUser, loginUser, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );

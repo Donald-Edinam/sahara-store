@@ -9,7 +9,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const { userState, loading, loginUser } = useContext(AuthContext);
+  const { userState, serverError, loading, loginUser } = useContext(AuthContext);
 
   const validateForm = () => {
     const newErrors = {};
@@ -40,14 +40,17 @@ const Login = () => {
 
     try {
       await loginUser({ email, password });
-      if (userState) {
+      if (!userState) {
+        toast.error("Error loggging in", serverError);
+      } else {
         toast.success(user.message);
         setTimeout(() => {
           navigate('/');
         }, 1000);
 
-          window.location.reload();
+        window.location.reload();
       }
+
     } catch (error) {
       console.error('Login failed', error);
       toast.error(error);
@@ -86,7 +89,7 @@ const Login = () => {
             />
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
           </div>
-          <button type="submit" className="btn btn-secondary w-full">Login</button>
+          <button type="submit" className={`btn btn-secondary w-full ${loading && "btn-disabled"}`}>{loading ? "Signing In..." : "Sign In"}</button>
 
           <div className="container mx-auto mt-3">
             <p className='text-center text-xs'>

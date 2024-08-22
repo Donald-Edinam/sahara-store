@@ -9,4 +9,4 @@
 //     (res)
 // )
 
- export const API_ROUTE = 'http://localhost:3000';
+ export const API_ROUTE = 'https://sahara-store.up.railway.app';
