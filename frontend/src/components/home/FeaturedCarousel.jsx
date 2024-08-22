@@ -4,19 +4,26 @@ import { ProductContext } from '../../context/ProductContext';
 import { Link } from 'react-router-dom';
 
 const FeaturedCarousel = () => {
-  const { products } = useContext(ProductContext);
+  const { products, loading } = useContext(ProductContext);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const featuredProducts = products;
+  const fetchedProducts = products?.data
+  if (loading) {
+    return <div>Loading...</div>; // Or a more sophisticated loading component
+  }
+
+  if (!products || products.length === 0) {
+    return <div>No products available</div>;
+  }
 
   const handlePrevSlide = (e) => {
     e.preventDefault();
-    setCurrentSlide(currentSlide === 0 ? featuredProducts.length - 1 : currentSlide - 1);
+    setCurrentSlide(currentSlide === 0 ? products.length - 1 : currentSlide - 1);
   };
 
   const handleNextSlide = (e) => {
     e.preventDefault();
-    setCurrentSlide(currentSlide === featuredProducts.length - 1 ? 0 : currentSlide + 1);
+    setCurrentSlide(currentSlide === products.length - 1 ? 0 : currentSlide + 1);
   };
 
   return (
@@ -27,21 +34,22 @@ const FeaturedCarousel = () => {
           className="flex transition-transform duration-700 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
-          {/* {featuredProducts.map((product) => (
-            <div key={product.id} className="min-w-full flex-shrink-0">
+          {fetchedProducts.map((product) => (
+            <div key={product._id} className="min-w-full flex-shrink-0">
               <Link 
-                to={`/product/${product.id}`}
+                to={`/product/${product._id}`}
                 className="block w-full h-full"
                 onClick={(e) => e.stopPropagation()}
               >
                 <img
-                  src={product.images[0]}
+                  // src={product?.images[0]}
+                  src={product}
                   className="w-full h-[550px] object-cover rounded-lg"
                   alt={`Product ${product.id}`}
                 />
               </Link>
             </div>
-          ))} */}1
+          ))}
         </div>
         <button 
           onClick={handlePrevSlide} 
@@ -60,4 +68,4 @@ const FeaturedCarousel = () => {
   );
 };
 
-export default FeaturedCarousel;
+export default FeaturedCarousel
