@@ -39,10 +39,14 @@ class OrderModel extends BaseModel {
                 type: String,
                 enum: ['Pending', 'Completed', 'Failed'],
                 default: 'Pending'
+            },
+            updatedAt: {
+                type: Date,
+                default: Date.now
             }
         }
         // Call the super constructor with the order schema
-        super(orderSchema, 'Order');
+        super(schemaDefinition, 'Order');
     }
 }
 

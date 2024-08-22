@@ -3,13 +3,27 @@ import PaymentService from "../services/paymentService.js";
 class PaymentController {
     static async payWithCard(req, res) {
         try {
-            const response = await PaymentService.cardPayment(req.body);
+            const { paymentDetails, orderDetails } = req.body;
+            if (!paymentDetails) {
+                return res.status(400).json({
+                    message: 'Payment details are required'
+                });
+            }
+
+            if (!orderDetails) {
+                return res.status(400).json({
+                    message: 'Order details are required'
+                });
+            }
+
+            const response = await PaymentService.processPayment(req.user.userId, orderDetails, paymentDetails, PaymentService.processPayment);
             if (response.status === 'success') {
                 return res.status(200).json({
                     message: 'Payment successful',
                     response
                 });
             }
+
             return res.status(400).json({
                 message: 'Payment failed',
                 response
@@ -31,7 +45,7 @@ class PaymentController {
             // processing logic example
             if (status === 'successful') {
                 console.log(`Payment successful for transaction reference: ${tx_ref}`);
-                t// perform actions based on the successful payment
+                // perform actions based on the successful payment
                 // For example: await PaymentService.updatePaymentStatus(tx_ref, 'successful');
             } else {
                 console.log(`Payment status: ${status} for transaction reference: ${tx_ref}`);

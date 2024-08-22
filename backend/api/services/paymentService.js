@@ -1,13 +1,44 @@
 import Flutterwave from 'flutterwave-node-v3';
 import dotenv from 'dotenv';
+import orderService from './orderService.js';
 
 dotenv.config();
 
 const flw = new Flutterwave(process.env.FLW_PUBLIC_KEY, process.env.FLW_SECRET_KEY);
 
 class PaymentService {
-    static async cardPayment(paymentData) {
+    static async processPayment(userId, orderData, paymentData, paymentProcessor) {
+        // create order
+        try{ 
+            const order = await orderService.createOrder(userId, orderData);
+        } catch (error) {
+            console.log(error);
+            throw new Error(`Error creating order: ${error.message}`);
+        }
+        
+        // process payment
+        try {
+            const paymentResult = await paymentProcessor(order, paymentData);
+            return paymentResult;
+        } catch (error) {
+            console.log(error);
+            throw new Error(`Error processing payment: ${error.message}`);
+        }
+    }
+
+    static async cardPayment(order, userId, paymentData,) {
+        if (!userId) {
+            throw new Error('userId is required');
+        }
+
+        if (!order) {
+            throw new Error('order is required');
+        }
+
         const { email, amount, currency, card_number, cvv, expiry_month, expiry_year } = paymentData;
+        if (!email || !amount || !currency || !card_number || !cvv || !expiry_month || !expiry_year) {
+            throw new Error('email, amount, currency, card_number, cvv, expiry_month, and expiry_year are required');
+        }
         const payload = {
             email,
             amount,
@@ -17,7 +48,7 @@ class PaymentService {
             expiry_month,
             expiry_year,
             enckey: process.env.FLW_ENCRYPTION_KEY,
-            tx_ref: 'MC-' + Date.now(), // Unique transaction reference
+            tx_ref: order._id, // Unique transaction reference
         };
         try {
             const response = await flw.Charge.card(payload);
