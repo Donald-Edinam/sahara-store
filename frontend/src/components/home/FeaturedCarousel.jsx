@@ -9,7 +9,11 @@ const FeaturedCarousel = () => {
 
   const fetchedProducts = products?.data
   if (loading) {
-    return <div>Loading...</div>; // Or a more sophisticated loading component
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
   }
 
   if (!products || products.length === 0) {
