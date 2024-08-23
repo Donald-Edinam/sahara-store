@@ -5,7 +5,7 @@ import EmptyCart from './EmptyCart';
 
 const ShoppingCart = () => {
   const [products, setProducts] = useState([
-    { id: 1, name: 'African Black Soap', price: 21.99, quantity: 1 }
+    // { id: 1, name: 'African Black Soap', price: 21.99, quantity: 1 }
   ]);
 
   const handleQuantityChange = (id, newQuantity) => {
