@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 import toast, { Toaster } from 'react-hot-toast';
@@ -11,17 +11,22 @@ const Login = () => {
 
   const { userState, serverError, loading, loginUser } = useContext(AuthContext);
 
+  useEffect(() => {
+    if (userState) {
+      toast.success('Successfully logged in!');
+      navigate('/');
+    }
+  }, [userState, navigate]);
+
   const validateForm = () => {
     const newErrors = {};
 
-    // Email validation
     if (!email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Email is invalid';
     }
 
-    // Password validation
     if (!password) {
       newErrors.password = 'Password is required';
     } else if (password.length < 4) {
@@ -34,26 +39,14 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
       await loginUser({ email, password });
-      if (!userState) {
-        toast.error("Error loggging in", serverError);
-      } else {
-        toast.success(user.message);
-        setTimeout(() => {
-          navigate('/');
-        }, 1000);
-
-        window.location.reload();
-      }
-
+      // Now the useEffect hook will handle the redirect after userState is updated
     } catch (error) {
       console.error('Login failed', error);
-      toast.error(error);
+      toast.error('Login failed: ' + (serverError || 'An unexpected error occurred'));
     }
   };
 
@@ -89,7 +82,9 @@ const Login = () => {
             />
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
           </div>
-          <button type="submit" className={`btn btn-secondary w-full ${loading && "btn-disabled"}`}>{loading ? "Signing In..." : "Sign In"}</button>
+          <button type="submit" className={`btn btn-secondary w-full ${loading && "btn-disabled"}`}>
+            {loading ? "Signing In..." : "Sign In"}
+          </button>
 
           <div className="container mx-auto mt-3">
             <p className='text-center text-xs'>
