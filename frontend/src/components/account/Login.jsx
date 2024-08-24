@@ -41,12 +41,14 @@ const Login = () => {
     if (!validateForm()) {
       return;
     }
-  
+
     try {
       const response = await loginUser({ email, password });
       if (response && response.user) {
-        toast.success("Login successful");
-        navigate("/products");
+        navigate("/products")
+        // setTimeout(() => {
+        //   toast.success("Login successful");  
+        // }, 1300)
       } else {
         toast.error("Login failed. Please try again.");
       }

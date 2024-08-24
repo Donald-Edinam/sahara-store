@@ -7,6 +7,7 @@ import ProductDetails from '../pages/ProductDetails';
 import CartPage from '../pages/cart/CartPage';
 import SignUpPage from '../pages/auth/SignUpPage';
 import LoginPage from '../pages/auth/LoginPage';
+import PrivacyPolicy from '../pages/privacy-policy/PrivacyPolicy';
 
 
 const NotFound = () => {
@@ -35,7 +36,8 @@ const Navigation = () => {
                     <Route path='/products' element={<ProductListingPage />} />
                     <Route path='/product/:id' element={<ProductDetails />} />
                     <Route path='/products/product/:id' element={<ProductDetails />} />
-                </Routes>
+                    <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+                 </Routes>
             </div>
         </Router>
     )
