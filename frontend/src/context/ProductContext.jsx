@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import fetchProducts from '../utils/hooks/fetchProducts';
+// import fetchProducts from '../utils/hooks/fetchProducts';
 import axios from 'axios';
 import { API_ROUTE } from '../services/axiosConfig';
 

@@ -49,13 +49,15 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const response = await axios.post(`${API_ROUTE}/auth/login`, credentials);
-      setUserState(response.data.user); // Update the user state with the `user` property
-      localStorage.setItem("user", JSON.stringify(response.data.user)); // Store the user data in localStorage
-      localStorage.setItem("token", response.data.token); // Store the token in localStorage
+      setUserState(response.data.user);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("token", response.data.token);
       setError(null);
+      return response.data; // Make sure to return the response data
     } catch (serverError) {
       console.error('Login failed', serverError);
-      setError(serverError?.response?.data?.message); // Update the error state with the `message` property
+      setError(serverError?.response?.data?.message);
+      throw serverError;
     } finally {
       setLoading(false);
     }

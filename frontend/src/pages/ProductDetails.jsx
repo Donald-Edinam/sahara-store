@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -36,16 +37,16 @@ const ProductDetails = () => {
   }
 
   return (
-    <section className='min-h-screen bg-gray-100 py-12'>
+    <section className='min-h-[70vh] bg-gray-100 py-12'>
       <div className="container mx-auto px-4">
         <h1 className='md:mx-10 px-10 my-4 font-semibold mt-3 font-sans text-2xl'>PRODUCT DETAILS</h1>
         <div className="bg-primary rounded-lg shadow-lg overflow-hidden">
           <div className="md:flex md:h-[60vh]">
-            <div className="md:flex-shrink-0 ">
+            <div className="md:shrink-1 ">
               <img
                 src={product.imageURL || 'https://via.placeholder.com/400x400?text=No+Image'}
                 alt={product.name}
-                className="h-48 w-full object-cover md:h-full md:w-48"
+                className="h-48 w-full object-cover md:h-full md:w-50"
               />
             </div>
             <div className="p-10 md:mt-10 ">

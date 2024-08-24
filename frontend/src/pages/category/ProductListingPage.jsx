@@ -1,13 +1,29 @@
-import React, { useContext } from 'react';
-import { CategoryContext } from '../../context/CategoryContext';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { ProductContext } from '../../context/ProductContext';
 
 const ProductListingPage = () => {
+  const { products, loading, error } = useContext(ProductContext);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const { categories, loading, error, products, fetchProductsByCategory, selectedCategory } = useContext(CategoryContext);
+  const fetchedProducts = products?.data;
+
+  useEffect(() => {
+    if (fetchedProducts && fetchedProducts.length > 0) {
+      const uniqueCategories = [...new Set(fetchedProducts.map(product => product.category))];
+      setCategories(uniqueCategories);
+    }
+  }, [fetchedProducts]);
+
+  const filteredProducts = selectedCategory
+    ? fetchedProducts.filter(product => product.category === selectedCategory)
+    : fetchedProducts;
 
   if (loading) return <div className="text-center py-10">Loading...</div>;
   if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
+
+  console.log("Categories", fetchedProducts)
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -18,38 +34,33 @@ const ProductListingPage = () => {
           <ul className="space-y-2">
             {categories.map((category) => (
               <li
-                key={category.id}
-                className={`cursor-pointer p-2 rounded hover:bg-base ${selectedCategory === category.id ? 'bg-secondary text-primary' : ''}`}
-                onClick={() => fetchProductsByCategory(category.id)}
+                key={category}
+                className={`cursor-pointer p-2 rounded hover:bg-base ${selectedCategory === category ? 'bg-secondary text-primary' : ''}`}
+                onClick={() => setSelectedCategory(category)}
               >
-                {category.name}
+                {category}
               </li>
             ))}
           </ul>
         </div>
         <div className="w-full md:w-3/4">
           <h2 className="text-xl font-semibold mb-4">Products</h2>
-          {selectedCategory ? (
+          {filteredProducts && filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {products.map((product) => (
-                <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                  <Link to={`product/${product.id}`}>
-                    <img
-                      src={product.images[0]}
-                      alt={product.title}
-                      className="w-full h-48 object-cover"
-                    />
-                  </Link>
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-2">{product.title}</h3>
-                    <p className="text-gray-600 mb-2">${product.price}</p>
-                    <p className="text-sm text-gray-500">{product.description.substring(0, 50)}...</p>
+              {filteredProducts.map((product) => (
+                <Link key={product._id} to={`product/${product._id}`}>
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+                      <p className="text-gray-600 mb-2">${product.price}</p>
+                      <p className="text-sm text-gray-500">{product.description.substring(0, 50)}...</p>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (
-            <p>Select a category to view products</p>
+            <p>No products available.</p>
           )}
         </div>
       </div>

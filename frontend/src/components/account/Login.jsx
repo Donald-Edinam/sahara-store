@@ -36,20 +36,29 @@ const Login = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
-
+    if (!validateForm()) {
+      return;
+    }
+  
     try {
-      await loginUser({ email, password });
-      // Now the useEffect hook will handle the redirect after userState is updated
+      const response = await loginUser({ email, password });
+      if (response && response.user) {
+        toast.success("Login successful");
+        navigate("/products");
+      } else {
+        toast.error("Login failed. Please try again.");
+      }
     } catch (error) {
       console.error('Login failed', error);
-      toast.error('Login failed: ' + (serverError || 'An unexpected error occurred'));
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.error || error.response.data.message || "An error occurred during login");
+      } else {
+        toast.error("An unexpected error occurred. Please try again later.");
+      }
     }
   };
-
   return (
     <div className="flex justify-center items-center min-h-[87vh] p-6 bg-base-200">
       <Toaster />
