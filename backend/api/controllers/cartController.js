@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import cartService from '../services/cartService.js';
 
 class CartController {
@@ -6,7 +7,6 @@ class CartController {
         try {
             let cart;
             if (req.user) {
-                console.log(req.user);
                  cart = await cartService.getCartByUserId(req.user.userId);
             } else {
                  cart = req.session.cart || [];
@@ -30,8 +30,8 @@ class CartController {
                     req.session.cart = [];
                 }
 
-                console.log({ productId, quantity });
-                const productIndex = req.session.cart.findIndex(product => product.productId === productId);
+                const ObjectId = new mongoose.Types.ObjectId(productId);
+                const productIndex = req.session.cart.findIndex(product => product.productId === ObjectId);
                 if (productIndex === -1) {
                     req.session.cart.push({ productId, quantity: parseInt(quantity) });
                 } else {

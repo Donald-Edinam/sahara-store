@@ -21,13 +21,13 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: { 
-        maxAge: 1000 * 60 * 60 * 24 * 7// 24 hours
+        maxAge: 1000 * 60 * 60 * 24 * 30 // 30 days
     }
 }));
 
 app.use('/api', cartRouter);
 app.use('/api', productRouter)
-app.use('/cart', cartRouter);
+app.use('/api', cartRouter);
 app.use('/api', orderRouter);
 /* app.use('/api', userRouter); */
 app.use('/api/payment', paymentRouter);
@@ -50,3 +50,17 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
+
+// write a code that checks if dbclient is alive and if not alive continue to try to connect to the database
+// every 0.1 seconds until it is connected
+const checkDbConnection = () => {
+    if (dbClient.isAlive()) {
+        return;
+    }
+
+    setTimeout(checkDbConnection, 100);
+};
+
+
+
+export default app;

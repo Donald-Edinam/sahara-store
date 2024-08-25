@@ -36,8 +36,6 @@ class CartModel extends BaseModel {
             throw new Error('User ID is required to find the cart');
         }
 
-        console.log(userId);
-
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             throw new Error('Invalid User ID format');
         }

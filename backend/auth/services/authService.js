@@ -25,7 +25,7 @@ class AuthService {
             console.log(error);
             throw new Error(error.message);
         }
-       const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Generate JWT token 
+       const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: '4h' }); // Generate JWT token 
        return { user: { id: newUser._id, name: newUser.name, email: newUser.email, role: newUser.role }, token }; // Return user and token data
     }
 
@@ -44,15 +44,15 @@ class AuthService {
         }
        const user = await userModel.getUserByEmail(email);
        if (!user) {
-        throw new Error("User with Email does not exist")
+            return {user: null, token: null};
        }
 
        const isMatch = await bcrypt.compare(password, user.password);
        if (!isMatch) {
-        throw new Error('Incorrect Password Provided');
+            return {user: null, token: null};
        }
 
-       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Generate JWT token 
+       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' }); // Generate JWT token 
        return {user: {id: user._id, name: user.name, email: user.email, role: user.role }, token }; // Return user and token data}}
     }
 }

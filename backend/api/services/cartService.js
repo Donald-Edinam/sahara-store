@@ -33,11 +33,12 @@ class CartService {
 
         if (!cart) {
             // Create a new cart if the user doesn't have one
+
             cart = await cartModel.create({ userId, products: [{ productId, quantity }] });
+            await cart.save();
         } else {
             // Add the product to the cart if it doesn't exist
             const productObjectId = new mongoose.Types.ObjectId(productId);
-            console.log(productObjectId)
             const productIndex = cart.products.findIndex(product => product.productId.equals(productObjectId));
             if (productIndex === -1) {
                 cart.products.push({ productId, quantity });
@@ -45,10 +46,10 @@ class CartService {
                 // Update the quantity if the product already exists
                 cart.products[productIndex].quantity += parseInt(quantity, 10);
             }
-
-            // Save the cart
             await cart.save();
         }
+
+        // Save the cart to the database
         return cart;
     }
 
@@ -61,7 +62,6 @@ class CartService {
         // Get the cart from the database
         try {
             const cart = await cartModel.findByUserId(id);
-            console.log(cart);
             if (!cart) {
                 return {};
             }
@@ -126,7 +126,6 @@ class CartService {
 
         // Get all carts that contain the product
         const carts = await cartModel.findByProductId(productId);
-        console.log("cart", carts);
         const objectId = new mongoose.Types.ObjectId(productId);
         for (const cart of carts) {
             // Remove the product from the cart
