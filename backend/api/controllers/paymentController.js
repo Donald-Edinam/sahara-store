@@ -17,9 +17,9 @@ class PaymentController {
                 });
             }
 
-            const {status, response } = await PaymentService.processPayment(req.user.userId, orderDetails, paymentDetails, PaymentService.processPayment);
+            const {status, response } = await PaymentService.processPayment(req.user.userId, paymentDetails, orderDetails, PaymentService.cardPayment);
             
-            if (status !== 200) {
+            if (status !== 201) {
                 return res.status(status).json({
                     message: 'Payment failed',
                     response
@@ -27,16 +27,11 @@ class PaymentController {
             }
 
             if (response.status === 'success') {
-                return res.status(200).json({
+                return res.status(201).json({
                     message: 'Payment successful',
                     response
                 });
             }
-
-            return res.status(400).json({
-                message: 'Payment failed',
-                response
-            });
             
         } catch (error) {
             console.log(error);
