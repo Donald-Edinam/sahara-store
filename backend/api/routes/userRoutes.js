@@ -5,5 +5,6 @@ import { authenticateToken, authorizeRole } from '../../auth/middleware/authMidd
 const userRouter = express.Router();
 
 userRouter.get('/profile', authenticateToken, authorizeRole, UserController.getUserProfile);
+userRouter.put('/profile', authenticateToken, authorizeRole, UserController.updateUserProfile);
 
 export default userRouter;

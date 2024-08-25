@@ -1,3 +1,4 @@
+import authService from '../../auth/services/authService.js';
 import UserModel from '../models/userModel.js';
 import cartService from './cartService.js';
 import orderService from './orderService.js';
@@ -25,7 +26,7 @@ class UserService {
             phone: user.phone,
             role: user.role,
             cart: userCart.products,
-            orders: userOrders
+            orders: user.order_history,
         };
 
         return { status: 200, response: userResponseData };
@@ -49,6 +50,28 @@ class UserService {
 
         const user  = await userModel.create({ name, email, phone, password, role }); 
         return user;
+    }
+
+    static async updateUserProfile(id, data) {
+        if (!id) {
+            throw new Error('User id is required');
+        }
+
+        if ('password' in data) {
+            data.password = authService.hashPassword(data.password);
+        }
+
+        if ('order_history' in data) {
+            return { status: 400, response: 'Cannot update order history' };
+        }
+
+        const user = await userModel.findById(id);
+        if (!user) {
+            return { status: 404, response: 'User not found' };
+        }
+
+        const updatedUser = await userModel.update(id, data);
+        return { status: 200, response: updatedUser };
     }
 }
 

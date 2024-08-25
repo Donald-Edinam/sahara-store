@@ -15,8 +15,6 @@ class OrderService {
             return { status: 400, response: 'Invalid data provided for creating the order' };
         }
 
-        
-
         if (!order.product) {
             return { status: 400, response: 'Invalid product data provided for creating the order' };
         }

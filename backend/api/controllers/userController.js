@@ -17,6 +17,20 @@ class UserController {
             res.status(500).json({ message: 'Error retrieving user', error: error.message });
         }
     }
+
+    static async updateUserProfile(req, res) {
+        try {
+            const { status, response } = await UserService.updateUserProfile(req.user.userId, req.body);
+            if (status !== 200) {
+                return res.status(status).json({ message: response });
+            }
+
+            res.status(200).json(response);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'Error updating user', error: error.message });
+        }
+    }
 }
 
 export default UserController;
