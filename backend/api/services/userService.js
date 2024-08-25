@@ -1,10 +1,34 @@
 import UserModel from '../models/userModel.js';
+import cartService from './cartService.js';
+import orderService from './orderService.js';
+
 
 const userModel = new UserModel();
 
 class UserService {
-    static async getUserByEmail(email) {
-        return await userModel.getUserByEmail(email);
+    static async getUserProfile(id) {
+        if (!id) {
+            throw new Error('User id is required');
+        }
+
+        const user = await userModel.findById(id);
+        if (!user) {
+            return { status: 404, response: 'User not found' };
+        }
+
+        const userOrders = await orderService.getOrders(id);
+        const userCart = await cartService.getCartByUserId(id);
+
+        const userResponseData = {
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            cart: userCart.products,
+            orders: userOrders
+        };
+
+        return { status: 200, response: userResponseData };
     }
 
     static async createUser(data) {

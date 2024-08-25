@@ -3,17 +3,20 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserService from '../services/userService.js';
 
-const userModel = new UserModel();
-
-
-class UserContoller {
-    static async getUser(req, res) {
+class UserController {
+    static async getUserProfile(req, res) {
         try {
-            const user = await UserService.getUserByEmail(req.params.email);
-            if (!user) {
-                return res.status(404).json({ message: 'User not found' });
+            const { status, response } = await UserService.getUserProfile(req.user.userId);
+            if (status !== 200) {
+                return res.status(status).json({ message: response });
             }
+
+            res.status(200).json(response);
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error retrieving user', error: error.message });
         }
+    }
 }
+
+export default UserController;

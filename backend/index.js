@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import dbClient from './config/dbConfig.js';
 import authRouter from './auth/routes/authRoutes.js';
 import productRouter from './api/routes/productRoutes.js';
+import userRouter from './api/routes/userRoutes.js';
 import orderRouter from './api/routes/orderRoutes.js';
 import paymentRouter from './api/routes/paymentRoutes.js';
 import cors from "cors"
@@ -29,7 +30,7 @@ app.use('/api', cartRouter);
 app.use('/api', productRouter)
 app.use('/api', cartRouter);
 app.use('/api', orderRouter);
-/* app.use('/api', userRouter); */
+app.use('/api/user', userRouter);
 app.use('/api/payment', paymentRouter);
 app.use('/auth', authRouter);
 
