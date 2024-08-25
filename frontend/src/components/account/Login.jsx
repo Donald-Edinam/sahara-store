@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 import toast, { Toaster } from 'react-hot-toast';
@@ -11,17 +11,22 @@ const Login = () => {
 
   const { userState, serverError, loading, loginUser } = useContext(AuthContext);
 
+  useEffect(() => {
+    if (userState) {
+      toast.success('Successfully logged in!');
+      navigate('/');
+    }
+  }, [userState, navigate]);
+
   const validateForm = () => {
     const newErrors = {};
 
-    // Email validation
     if (!email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Email is invalid';
     }
 
-    // Password validation
     if (!password) {
       newErrors.password = 'Password is required';
     } else if (password.length < 4) {
@@ -31,7 +36,6 @@ const Login = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
@@ -39,24 +43,24 @@ const Login = () => {
     }
 
     try {
-      await loginUser({ email, password });
-      if (!userState) {
-        toast.error("Error loggging in", serverError);
+      const response = await loginUser({ email, password });
+      if (response && response.user) {
+        navigate("/products")
+        // setTimeout(() => {
+        //   toast.success("Login successful");  
+        // }, 1300)
       } else {
-        toast.success(user.message);
-        setTimeout(() => {
-          navigate('/');
-        }, 1000);
-
-        window.location.reload();
+        toast.error("Login failed. Please try again.");
       }
-
     } catch (error) {
       console.error('Login failed', error);
-      toast.error(error);
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.error || error.response.data.message || "An error occurred during login");
+      } else {
+        toast.error("An unexpected error occurred. Please try again later.");
+      }
     }
   };
-
   return (
     <div className="flex justify-center items-center min-h-[87vh] p-6 bg-base-200">
       <Toaster />
@@ -89,7 +93,9 @@ const Login = () => {
             />
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
           </div>
-          <button type="submit" className={`btn btn-secondary w-full ${loading && "btn-disabled"}`}>{loading ? "Signing In..." : "Sign In"}</button>
+          <button type="submit" className={`btn btn-secondary w-full ${loading && "btn-disabled"}`}>
+            {loading ? "Signing In..." : "Sign In"}
+          </button>
 
           <div className="container mx-auto mt-3">
             <p className='text-center text-xs'>

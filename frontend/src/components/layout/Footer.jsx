@@ -49,6 +49,11 @@ const Footer = () => {
                         </svg>
                     </a>
                 </div>
+                <div className="container">
+                    <a href="/privacy-policy">
+                     Privacy Policy
+                    </a>
+                </div>
             </nav>
         </footer>
     )
