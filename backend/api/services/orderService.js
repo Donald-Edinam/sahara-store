@@ -11,15 +11,25 @@ class OrderService {
             throw new Error('userId is required');
         }
 
+        if (!order || typeof order !== 'object') {
+            return { status: 400, response: 'Invalid data provided for creating the order' };
+        }
+
+        
+
+        if (!order.product) {
+            return { status: 400, response: 'Invalid product data provided for creating the order' };
+        }
+
         const { product: { productId, quantity }, price } = order;
-        if (!userId || !productId || !quantity || !price) {
-            throw new Error('productId, quantity, and price are required');
+        if (!productId || !quantity || !price) {
+            return { status: 400, response: 'productId, quantity, and price are required' };
         }
 
         const product = await productModel.findById(productId);
         // const product = products.filter(product => product._id === productId);
         if (!product) {
-            throw new Error('Product not found');
+            return { status: 404, response: 'Product not found'};
         }
 
         const totalPrice = parseInt(price) * parseInt(quantity);
@@ -31,7 +41,7 @@ class OrderService {
         };
         try {
             const response = await this.orderModel.create(orderData);
-            return response;
+            return { status: 201, response };
         } catch(error) {
             console.log(error);
             throw new Error(`Error creating order: ${error.message}`);
@@ -69,28 +79,33 @@ class OrderService {
         }
     }
 
-    async updateOrder(id, order) {
+    async updateOrder(id, orderUpdateDetails) {
         if (!id) {
             throw new Error('id is required');
         }
 
-        if (!order && typeof order !== 'object') {
-            throw new Error('Invalid data provided for updating the document');
+        if (!orderUpdateDetails && typeof orderUpdateDetails !== 'object') {
+            return { status: 400, response: 'Invalid data provided for updating the order' };
         }
 
-        if (order.products) {
-            const { productId, quantity } = order.products;
+        if (orderUpdateDetails.products) {
+            const { productId, quantity } = orderUpdateDetails.products;
             if (!productId || !quantity) {
-                throw new Error('productId and quantity are required');
+                return { status: 400, response: 'productId and quantity are required' };
             }
         }
 
-        if (order.price) {
-            throw new Error('price cannot be updated');
+        if (orderUpdateDetails.totalPrice) {
+            return { status: 400, response: 'totalPrice cannot be updated' };
         }
 
         try {
-            return await this.orderModel.update(id, order);
+            const order =  await this.orderModel.update(id, orderUpdateDetails);
+            if (!order) {
+                return { status: 404, response: 'Order not found' };
+            }
+
+            return { status: 200, response: order };
         } catch(error) {
             console.log(error);
             throw new Error(`Error updating order: ${error.message}`);

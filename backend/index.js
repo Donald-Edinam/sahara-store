@@ -51,16 +51,5 @@ app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
 
-// write a code that checks if dbclient is alive and if not alive continue to try to connect to the database
-// every 0.1 seconds until it is connected
-const checkDbConnection = () => {
-    if (dbClient.isAlive()) {
-        return;
-    }
-
-    setTimeout(checkDbConnection, 100);
-};
-
-
 
 export default app;

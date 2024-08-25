@@ -3,8 +3,8 @@ import orderService from '../services/orderService.js';
 class OrderController {
     static async createOrder(req, res) {
         try {
-            const order = await orderService.createOrder(req.user.userId, req.body);
-            res.status(201).json(order);
+            const { status, response} = await orderService.createOrder(req.user.userId, req.body);
+            res.status(status).json({ message: response });
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: error.message });
@@ -28,6 +28,20 @@ class OrderController {
             }
             res.status(200).json(order);
         } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    static async updateOrder(req, res) {
+        try {
+            const { status, response } = await orderService.updateOrder(req.params.id, req.body);
+            if (status !== 200) {
+                return res.status(status).json({ message: response });
+            }
+
+            res.status(200).json(response);
+        } catch (error) {
+            console.log(error);
             res.status(500).json({ message: error.message });
         }
     }

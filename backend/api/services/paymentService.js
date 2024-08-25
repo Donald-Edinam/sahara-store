@@ -9,8 +9,15 @@ const flw = new Flutterwave(process.env.FLW_PUBLIC_KEY, process.env.FLW_SECRET_K
 class PaymentService {
     static async processPayment(userId, orderData, paymentData, paymentProcessor) {
         // create order
-        try{ 
-            const order = await orderService.createOrder(userId, orderData);
+        let response;
+        try{
+            console.log('order', orderData);
+            const result = await orderService.createOrder(userId, orderData);
+            const status = result.status;
+            response = result.response;
+            if (status !== 201) {
+                return { status, response };
+            }
         } catch (error) {
             console.log(error);
             throw new Error(`Error creating order: ${error.message}`);
@@ -18,7 +25,7 @@ class PaymentService {
         
         // process payment
         try {
-            const paymentResult = await paymentProcessor(order, paymentData);
+            const paymentResult = await paymentProcessor(response, paymentData);
             return paymentResult;
         } catch (error) {
             console.log(error);
@@ -26,18 +33,11 @@ class PaymentService {
         }
     }
 
-    static async cardPayment(order, userId, paymentData,) {
-        if (!userId) {
-            throw new Error('userId is required');
-        }
-
-        if (!order) {
-            throw new Error('order is required');
-        }
-
+    static async cardPayment(order, paymentData) {
+        console.log('Processing card payment');
         const { email, amount, currency, card_number, cvv, expiry_month, expiry_year } = paymentData;
         if (!email || !amount || !currency || !card_number || !cvv || !expiry_month || !expiry_year) {
-            throw new Error('email, amount, currency, card_number, cvv, expiry_month, and expiry_year are required');
+            return { status: 400, response: 'All field must be provided' };
         }
         const payload = {
             email,
@@ -64,7 +64,7 @@ class PaymentService {
                     flw_ref: reCallCharge.data.flw_ref
                 });
                 console.log(callValidate);
-                return callValidate;
+                return { status: 201, response: callValidate };
             }
             
             // Handle Redirect authorization
@@ -89,11 +89,11 @@ class PaymentService {
                 };
                 const reCallCharge = await flw.Charge.card(payload2);
                 console.log(reCallCharge);
-                return reCallCharge;
+                return { status: 201, response: reCallCharge };
             }
             
             console.log(response);
-            return response;
+            return { status: 201, response };
         } catch (error) {
             console.log(error);
             return error;

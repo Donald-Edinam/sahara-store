@@ -1,3 +1,4 @@
+import orderService from "../services/orderService.js";
 import PaymentService from "../services/paymentService.js";
 
 class PaymentController {
@@ -16,7 +17,15 @@ class PaymentController {
                 });
             }
 
-            const response = await PaymentService.processPayment(req.user.userId, orderDetails, paymentDetails, PaymentService.processPayment);
+            const {status, response } = await PaymentService.processPayment(req.user.userId, orderDetails, paymentDetails, PaymentService.processPayment);
+            
+            if (status !== 200) {
+                return res.status(status).json({
+                    message: 'Payment failed',
+                    response
+                });
+            }
+
             if (response.status === 'success') {
                 return res.status(200).json({
                     message: 'Payment successful',
@@ -44,13 +53,11 @@ class PaymentController {
 
             // processing logic example
             if (status === 'successful') {
-                console.log(`Payment successful for transaction reference: ${tx_ref}`);
-                // perform actions based on the successful payment
-                // For example: await PaymentService.updatePaymentStatus(tx_ref, 'successful');
+                orderService.updateOrder(tx_ref, { paymentStatus: 'Completed' });
+                // send personalized email to customer
             } else {
-                console.log(`Payment status: ${status} for transaction reference: ${tx_ref}`);
-                // Handle other statuses (e.g., failed, pending)
-                // For example: await PaymentService.updatePaymentStatus(tx_ref, 'failed');
+                orderService.updateOrder(tx_ref, { paymentStatus: 'Failed' });
+                // send personalized email to customer
             }
 
             res.status(200).send('Webhook received');

@@ -32,6 +32,10 @@ class BaseModel {
             throw new Error('Id is required to find the item');
         }
 
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return null;
+        }
+
         try {
             return await this.model.findById(id);
         } catch (error) {
@@ -42,6 +46,10 @@ class BaseModel {
     async update(id, updateData) {
         if (!id) {
             throw new Error('Id is required to update item');
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return null;
         }
 
         if (!updateData && typeof updateData !== 'object') {
@@ -58,6 +66,10 @@ class BaseModel {
     async delete(id) {
         if (!id) {
             throw new Error('Id is required to delete item');
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return null;
         }
         
         try {

@@ -42,6 +42,7 @@ class AuthService {
         if (!password) {
             throw new Error('Password is needed to login');
         }
+
        const user = await userModel.getUserByEmail(email);
        if (!user) {
             return {user: null, token: null};
