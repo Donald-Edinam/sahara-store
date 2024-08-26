@@ -49,7 +49,7 @@ class AuthController {
                 return;
             }
 
-            if (req.session.cart.length > 0) {
+            if (req.session.cart) {
                 req.session.cart.forEach(async product => {
                     try {
                         await cartService.addProductToCart(user.id, product);
@@ -67,6 +67,7 @@ class AuthController {
 
             res.end();
         } catch (error) {
+            console.log(error)
             res.status(500).json({ message: 'Error logging in user', error: error.message });
             res.end();
         }
