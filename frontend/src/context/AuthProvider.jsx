@@ -50,10 +50,11 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post(`${API_ROUTE}/auth/login`, credentials);
       setUserState(response.data.user);
+      localStorage.setItem("userID", JSON.stringify( response));
       localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("token", response.data.token);
       setError(null);
-      return response.data; // Make sure to return the response data
+      return response.data; // returns the response data
     } catch (serverError) {
       console.error('Login failed', serverError);
       setError(serverError?.response?.data?.message);
@@ -66,6 +67,8 @@ export const AuthProvider = ({ children }) => {
 
   const logoutUser = () => {
     setUserState(null);
+    localStorage.clear("token");
+    localStorage.clear("userID");
   };
 
   return (
