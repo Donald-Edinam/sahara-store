@@ -43,14 +43,14 @@ const ProductCategory = () => {
 
 
     return (
-        <div className='min-h-[100vh]' id='categories'>
+        <div className='min-h-[100vh] container' id='categories'>
             <ProductHeader heading={"Top Category"} description={"Explore Categories"} />
 
             {/* Responsive flexbox for ProductCard */}
             <div className="flex flex-wrap items-center mt-10 justify-around gap-5 m-4">
                 {firstProductCategory.map((data, index) => (
                     <Link to="/products" className="bg-red-400"  key={index}>
-                        <ProductCard data={data} className="flex-1 min-w-[250px] max-w-[300px]" />
+                        <ProductCard data={data} className="flex-1 min-w-[240px] max-w-[280px]" />
                     </Link>
                 ))}
             </div>
