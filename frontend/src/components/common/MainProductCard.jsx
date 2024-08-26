@@ -3,24 +3,30 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CartContext } from '../../context/CartProvider';
 import toast, { Toaster } from 'react-hot-toast';
-
+import { AuthContext } from '../../context/AuthProvider'; 
 const MainProductCard = ({ product }) => {
 
     const { addToCart, loading } = useContext(CartContext);
+    const {userState} = useContext(AuthContext);
 
     const [isAdding, setIsAdding] = useState(false);
 
     const handleAddToCart = async (productId, quantity) => {
         if (isAdding) return; // Prevent multiple simultaneous requests
         setIsAdding(true);
-        try {
-            await addToCart(productId, quantity);
-            toast.success("Added to cart successfully");
-        } catch (error) {
-            console.error("Error", error);
-            toast.error("Error adding to Cart");
-        } finally {
+        if(!userState) {
+            toast.error("Login to add items to cart");
             setIsAdding(false);
+        }else{
+            try {
+                await addToCart(productId, quantity);
+                toast.success("Added to cart successfully");
+            } catch (error) {
+                console.error("Error", error);
+                toast.error("Error adding to Cart");
+            } finally {
+                setIsAdding(false);
+            }
         }
     }
 

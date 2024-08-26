@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("token", response.data.token);
       setError(null);
-      return response.data; // Make sure to return the response data
+      return response.data; // returns the response data
     } catch (serverError) {
       console.error('Login failed', serverError);
       setError(serverError?.response?.data?.message);
