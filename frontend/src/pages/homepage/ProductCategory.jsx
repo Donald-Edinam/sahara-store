@@ -49,8 +49,8 @@ const ProductCategory = () => {
             {/* Responsive flexbox for ProductCard */}
             <div className="flex flex-wrap items-center mt-10 justify-around gap-5 m-4">
                 {firstProductCategory.map((data, index) => (
-                    <Link to="/products" className="bg-red-400">
-                        <ProductCard key={index} data={data} className="flex-1 min-w-[250px] max-w-[300px]" />
+                    <Link to="/products" className="bg-red-400"  key={index}>
+                        <ProductCard data={data} className="flex-1 min-w-[250px] max-w-[300px]" />
                     </Link>
                 ))}
             </div>
@@ -58,8 +58,8 @@ const ProductCategory = () => {
             {/* Responsive flexbox for SecondCategoryCard */}
             <div className="flex flex-wrap items-center mt-10 justify-center gap-5">
                 {secondProductCategory.map((data, index) => (
-                    <Link to={"product-listing"}>
-                        <SecondCategoryCard data={data} key={index} />
+                    <Link to={"product-listing"} key={index}>
+                        <SecondCategoryCard data={data} />
                     </Link>
                 ))}
             </div>

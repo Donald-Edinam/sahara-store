@@ -1,5 +1,5 @@
 import { AuthProvider } from "./context/AuthProvider"
-import { CategoryProvider } from "./context/CategoryContext"
+import { CartProvider } from "./context/CartProvider"
 import { ProductProvider } from "./context/ProductContext"
 import Navigation from "./navigation/Navigation"
 
@@ -9,9 +9,9 @@ export default function App() {
     <>
       <AuthProvider>
         <ProductProvider>
-          <CategoryProvider>
-            <Navigation />
-          </CategoryProvider>
+          <CartProvider>
+              <Navigation />
+          </CartProvider>
         </ProductProvider>
       </AuthProvider>
     </>

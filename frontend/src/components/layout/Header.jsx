@@ -3,11 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import CartButton from '../common/CartButton';
 import { AuthContext } from '../../context/AuthProvider';
 import LogoMain from '../../assets/Logo_main.png';
+import { CartContext } from '../../context/CartProvider';
 
 const Header = () => {
     const [isSidenavOpen, setIsSidenavOpen] = useState(false);
     const { userState, logoutUser } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    const { cart } = useContext(CartContext);
 
     const toggleSidenav = () => {
         setIsSidenavOpen(!isSidenavOpen);
@@ -18,17 +21,19 @@ const Header = () => {
         navigate('/');
     };
 
+    console.log("Cart", cart);
+
     return (
         <>
             <header className="bg-base-100 sticky top-0 z-10">
                 <div className="navbar flex justify-around items-center p-2 w-full">
-                    
+
                     {/* Logo and Hamburger Menu for Mobile */}
                     <div className="flex items-center justify-between sm:w-1/2">
                         <Link to="/" className="w-1/3">
                             <img
-                                className='' 
-                                src={LogoMain} 
+                                className=''
+                                src={LogoMain}
                                 alt="Sahara Store's Logo" />
                         </Link>
                         <div className="sm:hidden flex items-center">
@@ -52,7 +57,7 @@ const Header = () => {
                             <li>
                                 <details>
                                     <summary className='cursor-pointer'>
-                                        {userState ? `Account (${userState.email})` : 'Account'}
+                                        {userState ? `Account (${userState.name})` : 'Account'}
                                     </summary>
                                     <ul className="bg-base-100 rounded-t-none p-2">
                                         {!userState ? (
@@ -69,7 +74,7 @@ const Header = () => {
                                 </details>
                             </li>
                             <li onClick={() => navigate("/cart")}>
-                                <CartButton />
+                                <CartButton cart={cart}/>
                             </li>
                         </ul>
                     </div>

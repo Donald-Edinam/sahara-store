@@ -1,4 +1,5 @@
-import React from 'react'
+// Navigation.js
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Header from '../components/layout/Header';
 import Home from '../pages/Home';
@@ -8,7 +9,7 @@ import CartPage from '../pages/cart/CartPage';
 import SignUpPage from '../pages/auth/SignUpPage';
 import LoginPage from '../pages/auth/LoginPage';
 import PrivacyPolicy from '../pages/privacy-policy/PrivacyPolicy';
-
+import Loader from '../components/common/Loader'; // Import your Loader component
 
 const NotFound = () => {
     return (
@@ -23,6 +24,23 @@ const NotFound = () => {
 }
 
 const Navigation = () => {
+    const [loading, setLoading] = useState(true); // Add loading state
+
+    useEffect(() => {
+        const fetchData = async () => {
+            // Simulate a fetch or any async task
+            // Replace this with actual data fetching if needed
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            setLoading(false); // Set loading to false once resources are loaded
+        };
+
+        fetchData();
+    }, []);
+
+    if (loading) {
+        return <Loader />; // Show loader if still loading
+    }
+
     return (
         <Router>
             <div data-theme="afrimart">
@@ -43,4 +61,4 @@ const Navigation = () => {
     )
 }
 
-export default Navigation
+export default Navigation;
