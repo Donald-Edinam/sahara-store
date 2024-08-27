@@ -55,4 +55,4 @@ class ProductModel extends BaseModel {
     }
 }
 
-export default new ProductModel();
+export default ProductModel;
