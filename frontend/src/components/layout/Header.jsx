@@ -42,7 +42,9 @@ const Header = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
                                 </svg>
                             </button>
-                            <CartButton />
+                            <Link to={"/cart"}>
+                                <CartButton cart={cart} />
+                            </Link>
                         </div>
                     </div>
 
@@ -74,7 +76,7 @@ const Header = () => {
                                 </details>
                             </li>
                             <li onClick={() => navigate("/cart")}>
-                                <CartButton cart={cart}/>
+                                <CartButton cart={cart} />
                             </li>
                         </ul>
                     </div>

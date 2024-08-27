@@ -162,6 +162,7 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     if (userState) {
       fetchCart();
+      localStorage.setItem("cart", cart);
     } else {
       setCart(null);
     }
