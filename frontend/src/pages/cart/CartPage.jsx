@@ -4,7 +4,7 @@ import ShoppingCart from './ShoppingCart'
 
 const CartPage = () => {
   return (
-    <div className="container mt-10">
+    <div className="container-lg mt-10">
       <ShoppingCart />
     </div>
   )
