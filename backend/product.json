@@ -1,0 +1,189 @@
+[
+    {
+      "_id": "66c5fcef37c47222223b55c0",
+      "name": "Moroccan Argan Oil",
+      "description": "Premium, organic argan oil from Morocco.",
+      "price": 22.99,
+      "category": "Cosmetics",
+      "stock": 50,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/87/13/e8/8713e812955cc8c76a25b2054251f6d6.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c5fcef37c47222223b55c2",
+      "name": "Kenyan Tea",
+      "description": "Strong, flavorful tea from Kenya.",
+      "price": 12.99,
+      "category": "Beverages",
+      "stock": 105,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/fb/53/b4/fb53b49e2c254834d2c404b4faac126c.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c5fcef37c47222223b55c4",
+      "name": "Ethiopian Honey",
+      "description": "Pure, natural honey from Ethiopia.",
+      "price": 15.99,
+      "category": "Food",
+      "stock": 70,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/2c/d4/df/2cd4df41e4bd676b26e2b7d6d09db6e6.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c5fcf037c47222223b55c6",
+      "name": "Egyptian Cotton Sheets",
+      "description": "Luxurious, high-quality cotton sheets from Egypt.",
+      "price": 79.99,
+      "category": "Home",
+      "stock": 45,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/ad/c9/ff/adc9ffbef053720c850234da0c940893.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c5fcf037c47222223b55c8",
+      "name": "South African Wine",
+      "description": "Fine wine from South Africa.",
+      "price": 24.99,
+      "category": "Beverages",
+      "stock": 65,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/bc/b0/b2/bcb0b25b857300cca81b35aaeb501661.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c5fcf037c47222223b55ca",
+      "name": "Botswana Leather Handbags",
+      "description": "Elegant, handmade leather handbags from Botswana.",
+      "price": 150,
+      "category": "Fashion",
+      "stock": 25,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/d4/b9/14/d4b9149dd194ea9336d79abf7c461a34.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c5fcf137c47222223b55cc",
+      "name": "Ugandan Vanilla Beans",
+      "description": "High-quality, flavorful vanilla beans from Uganda.",
+      "price": 32.99,
+      "category": "Spices",
+      "stock": 45,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/ec/d8/af/ecd8afd527467fb40b9011063ca72963.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c5fcf137c47222223b55ce",
+      "name": "Ghanaian Cocoa Butter",
+      "description": "Rich, nourishing cocoa butter from Ghana.",
+      "price": 16.99,
+      "category": "Cosmetics",
+      "stock": 65,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/72/45/e6/7245e603f0656c2089b5086fccca9dce.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c5fcf137c47222223b55d0",
+      "name": "Togolese Shea Butter",
+      "description": "Nourishing, natural shea butter from Togo.",
+      "price": 18.99,
+      "category": "Cosmetics",
+      "stock": 60,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/6d/4c/4a/6d4c4a226d44793cf592c4b223b0bcb8.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c5fcf237c47222223b55d2",
+      "name": "Tanzanian Cloves",
+      "description": "Aromatic cloves from Tanzania.",
+      "price": 11.99,
+      "category": "Spices",
+      "stock": 110,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/0e/6e/9d/0e6e9d0010112d80a22295ede4b0b1f7.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c5fcf237c47222223b55d4",
+      "name": "Kenyan Coffee",
+      "description": "Rich, aromatic coffee beans from Kenya.",
+      "price": 10.99,
+      "category": "Beverages",
+      "stock": 100,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/ab/64/c6/ab64c63315b3538e6334aa1a0a3e2ce6.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c6345e2d7e3ef43be90a52",
+      "name": "Ivory Coast Chocolate",
+      "description": "Exquisite, rich chocolate made from Ivory Coast cocoa.",
+      "price": 14.99,
+      "category": "Food",
+      "stock": 100,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/60/bb/91/60bb91c25bc12a652ec4046c743f58f5.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c6345f2d7e3ef43be90a58",
+      "name": "Nigerian Shea Oil",
+      "description": "Natural, organic shea oil from Nigeria.",
+      "price": 19.99,
+      "category": "Cosmetics",
+      "stock": 75,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/98/9c/ef/989cefe50e49c9604d1abc7bdf7bd2c0.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c634612d7e3ef43be90a5e",
+      "name": "Namibian Leather Wallets",
+      "description": "Handcrafted leather wallets from Namibia.",
+      "price": 55,
+      "category": "Fashion",
+      "stock": 30,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/2c/c1/d4/2cc1d482b82944cb68a8670e69424c87.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c634632d7e3ef43be90a64",
+      "name": "Malian Mud Cloth",
+      "description": "Authentic Malian mud cloth, handwoven.",
+      "price": 60,
+      "category": "Home",
+      "stock": 35,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/68/87/aa/6887aaedcab31b3e80a90d1ac54806b3.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c634662d7e3ef43be90a6e",
+      "name": "Rwandan Coffee Beans",
+      "description": "Premium coffee beans sourced from Rwanda.",
+      "price": 13.99,
+      "category": "Beverages",
+      "stock": 80,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/26/69/5a/26695a40bf70a587363374f7ee72180c.jpg",
+      "__v": 0
+    },
+    {
+      "_id": "66c634682d7e3ef43be90a7c",
+      "name": "Cameroonian Peanut Butter",
+      "description": "Rich and creamy peanut butter from Cameroon.",
+      "price": 8.99,
+      "category": "Food",
+      "stock": 90,
+      "tags": [],
+      "imageUrl": "https://i.pinimg.com/564x/dc/c1/cb/dcc1cbf2905ff91cfb888b7c3216f4b2.jpg",
+      "__v": 0
+    }
+  ]  

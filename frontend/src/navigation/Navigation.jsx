@@ -10,6 +10,7 @@ import SignUpPage from '../pages/auth/SignUpPage';
 import LoginPage from '../pages/auth/LoginPage';
 import PrivacyPolicy from '../pages/privacy-policy/PrivacyPolicy';
 import Loader from '../components/common/Loader'; // Import your Loader component
+import Cart from '../pages/cart/component/Cart';
 
 const NotFound = () => {
     return (

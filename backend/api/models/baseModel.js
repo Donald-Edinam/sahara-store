@@ -7,7 +7,7 @@ class BaseModel {
     }
 
     async create(data) {
-        if (!data && typeof data !== 'object') {
+        if (!data || typeof data !== 'object') {
             throw new Error('Invalid data provided for creating the document');
         }
 
@@ -52,12 +52,15 @@ class BaseModel {
             return null;
         }
 
-        if (!updateData && typeof updateData !== 'object') {
+        if (!updateData || typeof updateData !== 'object') {
             throw new Error('Invalid data provided for updating the document');
         }
 
+        // Exclude _id from updateData
+        const { _id, ...updateFields } = updateData;
+
         try {
-            return await this.model.findByIdAndUpdate(id, updateData, { new: true });
+            return await this.model.findByIdAndUpdate(id, updateFields, { new: true });
         } catch (error) {
             throw new Error(`Error updating item: ${error.message}`);
         }
@@ -80,7 +83,7 @@ class BaseModel {
     }
 
     async find(searchQuery) {
-        if (!searchQuery && typeof searchQuery !== 'object') {
+        if (!searchQuery || typeof searchQuery !== 'object') {
             throw new Error('Invalid search query');
         }
 

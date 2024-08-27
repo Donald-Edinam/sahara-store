@@ -25,7 +25,7 @@ const Header = () => {
 
     return (
         <>
-            <header className="bg-base-100 sticky top-0 z-10">
+            <header className="bg-base-100 fixed w-screen top-0 z-10">
                 <div className="navbar flex justify-around items-center p-2 w-full">
 
                     {/* Logo and Hamburger Menu for Mobile */}

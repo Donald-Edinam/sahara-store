@@ -1,13 +1,19 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { API_ROUTE } from '../services/axiosConfig';
+import { AuthContext } from '../context/AuthProvider';
+import { CartContext } from '../context/CartProvider'
+import toast, { Toaster } from 'react-hot-toast';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAdding, setIsAdding] = useState(false);
+  const { userState } = useContext(AuthContext); 
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     const fetchProductById = async () => {
@@ -24,6 +30,27 @@ const ProductDetails = () => {
     fetchProductById();
   }, [id]);
 
+  // Add to Cart
+  const handleAddToShopping = async (productId, quantity) => {
+    setIsAdding(true);
+    
+    if (!userState) {
+        toast.error("Login to add items to cart");
+        setIsAdding(false);
+    } else {
+        try {
+            await addToCart(productId, quantity);
+            toast.success("Added to cart successfully");
+        } catch (error) {
+            console.error("Error", error);
+            toast.error("Error adding to Cart");
+        } finally {
+            setIsAdding(false);
+        }
+    }
+  }
+
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -37,16 +64,17 @@ const ProductDetails = () => {
   }
 
   return (
-    <section className='min-h-[70vh] bg-gray-100 py-12'>
+    <section className='min-h-[70vh] bg-gray-100 mt-10 py-12'>
+      <Toaster />
       <div className="container mx-auto px-4">
         <h1 className='md:mx-10 px-10 my-4 font-semibold mt-3 font-sans text-2xl'>PRODUCT DETAILS</h1>
-        <div className="bg-primary rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-primary rounded-lg shadow-md overflow-hidden">
           <div className="md:flex md:h-[60vh]">
             <div className="md:shrink-1 ">
               <img
-                src={product.imageURL || 'https://via.placeholder.com/400x400?text=No+Image'}
+                src={product.imageUrl || 'https://via.placeholder.com/400x400?text=No+Image'}
                 alt={product.name}
-                className="h-48 w-full object-cover md:h-full md:w-50"
+                className="h-48 w-full object-cover md:h-full md:w-70"
               />
             </div>
             <div className="p-10 md:mt-10 ">
@@ -64,8 +92,13 @@ const ProductDetails = () => {
                   <span className="text-2xl font-bold text-gray-900">${product.price}</span>
                   <span className="ml-2 text-sm text-gray-500">USD</span>
                 </div>
-                <button className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-secondary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500">
-                  Add to Cart
+                <button 
+                onClick={() => handleAddToShopping(id, 1)}
+                disabled={isAdding}
+                className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-secondary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500">
+                  {
+                    isAdding ? "Adding..." : "Add to Cart"
+                  }
                 </button>
               </div>
             </div>

@@ -1,4 +1,5 @@
-import BaseModel from "./baseModel.js";
+import mongoose from 'mongoose';
+import BaseModel from './baseModel.js';
 
 class ProductModel extends BaseModel {
     constructor() {
@@ -40,6 +41,18 @@ class ProductModel extends BaseModel {
         };
         super(schemaDefinition, 'Product');
     }
+
+    async findOne(query) {
+        if (!query || typeof query !== 'object') {
+            throw new Error('Invalid query provided for finding the document');
+        }
+
+        try {
+            return await this.model.findOne(query);
+        } catch (error) {
+            throw new Error(`Error finding item: ${error.message}`);
+        }
+    }
 }
 
-export default ProductModel;
+export default new ProductModel();

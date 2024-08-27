@@ -6,7 +6,7 @@ const ProductCard = ({ data }) => {
 
     return (
         <>
-            <div className="card border-2 border-amber-800 rounded-[10px] bg-base-100 w-[350px] h-[401px] shadow-md">
+            <div className="card border-2 border-amber-800 rounded-[10px] bg-base-100 w-[300px] h-[401px] shadow-md">
                 <figure>
                     <img
                         src={image}
