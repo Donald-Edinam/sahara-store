@@ -2,12 +2,22 @@ import React, { useContext, useState } from 'react';
 import ProductHeader from './ProductHeader';
 import { ProductContext } from '../../context/ProductContext';
 import { Link } from 'react-router-dom';
+import { productImg } from '../../../productImg'; // Make sure this path is correct
 
 const FeaturedCarousel = () => {
   const { products, loading } = useContext(ProductContext);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const fetchedProducts = products?.data
+  const fetchedProducts = products?.data || [];
+
+  // Function to find the best matching image
+  const findBestImageMatch = (productName) => {
+    const key = Object.keys(productImg).find(key => 
+      productName.toLowerCase().includes(key.toLowerCase())
+    );
+    return key ? productImg[key] : ''; // Return the URL if found, or an empty string
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -16,18 +26,18 @@ const FeaturedCarousel = () => {
     );
   }
 
-  if (!products || products.length === 0) {
+  if (!fetchedProducts || fetchedProducts.length === 0) {
     return <div>No products available</div>;
   }
 
   const handlePrevSlide = (e) => {
     e.preventDefault();
-    setCurrentSlide(currentSlide === 0 ? products.length - 1 : currentSlide - 1);
+    setCurrentSlide(currentSlide === 0 ? fetchedProducts.length - 1 : currentSlide - 1);
   };
 
   const handleNextSlide = (e) => {
     e.preventDefault();
-    setCurrentSlide(currentSlide === products.length - 1 ? 0 : currentSlide + 1);
+    setCurrentSlide(currentSlide === fetchedProducts.length - 1 ? 0 : currentSlide + 1);
   };
 
   return (
@@ -46,10 +56,9 @@ const FeaturedCarousel = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <img
-                  // src={product?.images[0]}
-                  src={product}
+                  src={findBestImageMatch(product.name)}
                   className="w-full h-[550px] object-cover rounded-lg"
-                  alt={`Product ${product.id}`}
+                  alt={product.name}
                 />
               </Link>
             </div>
@@ -72,4 +81,4 @@ const FeaturedCarousel = () => {
   );
 };
 
-export default FeaturedCarousel
+export default FeaturedCarousel;

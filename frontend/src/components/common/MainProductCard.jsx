@@ -25,7 +25,7 @@ export const handleAddToCart = async (productId, quantity, addToCart, userState,
     }
 };
 
-const MainProductCard = ({ product }) => {
+const MainProductCard = ({ product, image }) => {
     const { addToCart } = useContext(CartContext);
     const { userState } = useContext(AuthContext);
 
@@ -44,7 +44,7 @@ const MainProductCard = ({ product }) => {
                     <Link to={`/product/${product._id}`}>
                         <img
                             className='w-[406px] h-[373px]'
-                            src={product.imageURL}
+                            src={image}
                             alt={product.name}
                         />
                     </Link>
@@ -54,7 +54,7 @@ const MainProductCard = ({ product }) => {
                         <h2 className="card-title text-3xl font-serif">{product.name}</h2>
                         <p className='text-lg'>{product.description.slice(0, 69)}...</p>
                     </Link>
-                    <div className="card-actions flex justify-between">
+                    <div className="card-actions pt-8 flex justify-between">
                         <div className="price">
                             <h6 className='font-serif'>PRICE</h6>
                             <h3 className='font-sans font-semibold text-lg'>${product.price}</h3>
