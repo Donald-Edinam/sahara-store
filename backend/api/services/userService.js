@@ -73,6 +73,11 @@ class UserService {
         const updatedUser = await userModel.update(id, data);
         return { status: 200, response: updatedUser };
     }
+
+    static async getUserByEmail(email) {
+        const user = await userModel.getUserByEmail(email)
+        return user
+    }
 }
 
 export default UserService;

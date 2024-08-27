@@ -13,6 +13,7 @@ class AuthService {
         }
 
         const existingUser = await UserService.getUserByEmail(email);  // Check if user already exists
+        console.log(existingUser)
         if (existingUser) {
             throw new Error('User already exists');
         }
@@ -43,7 +44,7 @@ class AuthService {
             throw new Error('Password is needed to login');
         }
 
-       const user = await userModel.getUserByEmail(email);
+       const user = await UserService.getUserByEmail(email);
        if (!user) {
             return {user: null, token: null};
        }
