@@ -61,7 +61,7 @@ const ShoppingCart = () => {
   const totalQuantity = products.reduce((sum, product) => sum + product.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-base-200">
+    <div className="min-h-[70vh] mt-20 bg-base-200">
       <div className="container mx-auto p-4">
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">

@@ -3,7 +3,7 @@ import React from 'react'
 const ProductTable = ({ products, onQuantityChange }) => {
   return (
     <div className="overflow-x-auto">
-      <table className="table w-full">
+      <table className="table mt-10 w-full">
         <thead>
           <tr>
             <th>PRODUCTS</th>
