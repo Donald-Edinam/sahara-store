@@ -74,8 +74,8 @@ const ProductListingPage = () => {
           <h2 className="text-xl font-semibold mb-4">Products</h2>
           {filteredProducts && filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProducts.map((product) => (
-               <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-[400px]">
+              {filteredProducts.map((product, index) => (
+               <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-[400px]">
                <div className="h-48 overflow-hidden">
                  <Link key={product._id} to={`product/${product._id}`}>
                    <img

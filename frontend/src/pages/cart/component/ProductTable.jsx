@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const ProductTable = ({ products, onQuantityChange }) => {
   return (
@@ -14,27 +14,27 @@ const ProductTable = ({ products, onQuantityChange }) => {
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr key={product.id}>
-              <td>{product.name}</td>
-              <td>${product.price ? product.price.toFixed(2) : '0.00'}</td>
+            <tr key={product._id}>
+              <td>{product.productId?.name || 'N/A'}</td>
+              <td>${(product.productId?.price || 0).toFixed(2)}</td>
               <td>
                 <div className="btn-group flex gap-2">
                   <button
                     className="btn btn-error btn-sm"
-                    onClick={() => onQuantityChange(product.id, (product.quantity || 0) - 1)}
+                    onClick={() => onQuantityChange(product.productId?._id, (product.quantity || 0) - 1)}
                   >
                     -
                   </button>
                   <button className="btn btn-sm">{product.quantity || 0}</button>
                   <button
                     className="btn btn-success btn-sm"
-                    onClick={() => onQuantityChange(product.id, (product.quantity || 0) + 1)}
+                    onClick={() => onQuantityChange(product.productId?._id, (product.quantity || 0) + 1)}
                   >
                     +
                   </button>
                 </div>
               </td>
-              <td>${((product.price || 0) * (product.quantity || 0)).toFixed(2)}</td>
+              <td>${((product.productId?.price || 0) * (product.quantity || 0)).toFixed(2)}</td>
             </tr>
           ))}
         </tbody>
@@ -43,5 +43,4 @@ const ProductTable = ({ products, onQuantityChange }) => {
   );
 };
 
-
-export default ProductTable
+export default ProductTable;
