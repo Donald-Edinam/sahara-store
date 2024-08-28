@@ -36,15 +36,15 @@ const Header = () => {
                                 src={LogoMain}
                                 alt="Sahara Store's Logo" />
                         </Link>
-                        <div className="sm:hidden flex items-center">
+                        <div className="sm:hidden flex items-center justify-center">
                             <button onClick={toggleSidenav} className="btn btn-ghost text-xl">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
                                 </svg>
                             </button>
-                            <Link to={"/cart"}>
+                            <a href={"/cart"}>
                                 <CartButton cart={cart} />
-                            </Link>
+                            </a>
                         </div>
                     </div>
 
@@ -58,7 +58,7 @@ const Header = () => {
                         <ul className="menu menu-horizontal flex-nowrap px-1 gap-4">
                             <li>
                                 <details>
-                                    <summary className='cursor-pointer'>
+                                    <summary className='cursor-pointer mt-3'>
                                         {userState ? `Account (${userState.name})` : 'Account'}
                                     </summary>
                                     <ul className="bg-base-100 rounded-t-none p-2">
@@ -75,8 +75,10 @@ const Header = () => {
                                     </ul>
                                 </details>
                             </li>
-                            <li onClick={() => navigate("/cart")}>
-                                <CartButton cart={cart} />
+                            <li>
+                                <a href="/cart">
+                                    <CartButton cart={cart} />
+                                </a>
                             </li>
                         </ul>
                     </div>

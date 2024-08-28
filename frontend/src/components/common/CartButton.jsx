@@ -7,7 +7,7 @@ const CartButton = () => {
   const { cart } = useContext(CartContext);
 
   // Calculate total items in the cart
-  const totalItems = userState && cart ? cart.quantity : 0;
+  const totalItems = userState && cart ? cart?.products.length : 0;
 
   return (
     <button className="btn btn-secondary">

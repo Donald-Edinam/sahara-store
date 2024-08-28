@@ -106,66 +106,68 @@ export const CartProvider = ({ children }) => {
       setLoading(false);
     }
   };
-
   const removeFromCart = async (productId) => {
     setLoading(true);
     try {
-      const updatedCart = Array.isArray(cart) ? cart.filter(item => item.productId !== productId) : [];
+        // Filter out the product with matching productId._id
+        const updatedProducts = cart.products.filter(item => item.productId._id !== productId);
+        const updatedCart = { ...cart, products: updatedProducts };
 
-      setCart(updatedCart);
-      saveCartToLocalStorage(updatedCart);
-
-      if (userState) {
-        await fetch(`${API_ROUTE}/api/carts/${productId}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-      }
-
-      setError(null);
-    } catch (err) {
-      console.error('Error removing from cart:', err);
-      setError(err.message || 'An error occurred while removing from cart');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateCartItemQuantity = async (productId, newQuantity) => {
-    setLoading(true);
-    try {
-      const updatedCart = Array.isArray(cart) ? cart.map(item => {
-        if (item.productId === productId) {
-          return { ...item, quantity: newQuantity };
+        if (userState) {
+            await fetch(`${API_ROUTE}/api/carts/${productId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
         }
-        return item;
-      }) : [];
+
+        setCart(updatedCart);
+        saveCartToLocalStorage(updatedCart);
+        setError(null);
+    } catch (err) {
+        console.error('Error removing from cart:', err);
+        setError(err.message || 'An error occurred while removing from cart');
+    } finally {
+        setLoading(false);
+    }
+};
+const updateCartItemQuantity = async (productId, newQuantity) => {
+  setLoading(true);
+  try {
+      // Update the cart state with the new quantity
+      const updatedProducts = cart.products.map((item) => {
+          if (item.productId._id === productId) {
+              return { ...item, quantity: newQuantity };
+          }
+          return item;
+      });
+
+      const updatedCart = { ...cart, products: updatedProducts };
+     
+      if (userState) {
+          await fetch(`${API_ROUTE}/api/carts/${productId}`, {
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({ quantity: newQuantity })
+          });
+      }
 
       setCart(updatedCart);
       saveCartToLocalStorage(updatedCart);
 
-      if (userState) {
-        await fetch(`${API_ROUTE}/api/carts/${productId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ quantity: newQuantity })
-        });
-      }
-
       setError(null);
-    } catch (err) {
+  } catch (err) {
       console.error('Error updating cart item quantity:', err);
       setError(err.message || 'An error occurred while updating cart item quantity');
-    } finally {
+  } finally {
       setLoading(false);
-    }
-  };
-  
+  }
+};
+
   const clearCart = async () => {
     setLoading(true);
     try {

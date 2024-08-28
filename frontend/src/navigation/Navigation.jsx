@@ -10,6 +10,7 @@ import SignUpPage from '../pages/auth/SignUpPage';
 import LoginPage from '../pages/auth/LoginPage';
 import PrivacyPolicy from '../pages/privacy-policy/PrivacyPolicy';
 import Loader from '../components/common/Loader';
+import PaymentForm from '../components/checkout/PaymentForm';
 
 const NotFound = () => {
     return (
@@ -55,6 +56,7 @@ const Navigation = () => {
                     <Route path='/product/:id' element={<ProductDetails />} />
                     <Route path='/products/product/:id' element={<ProductDetails />} />
                     <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+                    <Route path='/cart/payment' element={<PaymentForm />} />
                  </Routes>
             </div>
         </Router>

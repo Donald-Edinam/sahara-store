@@ -5,7 +5,7 @@ import EmptyCart from './EmptyCart';
 import { CartContext } from '../../context/CartProvider';
 
 const ShoppingCart = () => {
-  const { cart, updateCartItemQuantity, clearCart } = useContext(CartContext);
+  const { cart, updateCartItemQuantity, clearCart, removeFromCart } = useContext(CartContext);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -17,14 +17,17 @@ const ShoppingCart = () => {
   }, [cart]);
 
   const handleQuantityChange = (productId, newQuantity) => {
+    // Ensure quantity is always at least 1
+    const validQuantity = Math.max(1, newQuantity);
+
     const updatedProducts = products.map((product) =>
       product.productId._id === productId
-        ? { ...product, quantity: Math.max(1, newQuantity) }
+        ? { ...product, quantity: validQuantity }
         : product
     );
 
     setProducts(updatedProducts);
-    updateCartItemQuantity(productId, Math.max(1, newQuantity));
+    updateCartItemQuantity(productId, validQuantity);
   };
 
   const handleClearCart = () => {
@@ -36,13 +39,13 @@ const ShoppingCart = () => {
 
   return (
     <div className="min-h-[70vh] mt-20 bg-base-200">
-      <div className="container mx-auto p-4">
+      <div className="sm:container md:container-lg container-lg  mx-auto p-4">
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
-            <h2 className="card-title mb-4">PRODUCTS</h2>
+            <h2 className="card-title mb-4 ">CART LISTINGS</h2>
             {products.length > 0 ? (
               <>
-                <ProductTable products={products} onQuantityChange={handleQuantityChange} />
+                <ProductTable products={products} onQuantityChange={handleQuantityChange} removeFromCart={removeFromCart}/>
                 <div className="divider"></div>
                 <div className="flex justify-end">
                   <CartSummary
