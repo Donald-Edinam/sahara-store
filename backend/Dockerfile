@@ -1,5 +1,5 @@
-# Use Node.js version 20.16.0 to match the local environment
-FROM node:20.16.0-alpine
+# Use Node.js version 20.x to match the local environment
+FROM node:20-alpine
 
 # Set the working directory
 WORKDIR /app
@@ -18,5 +18,5 @@ COPY . .
 # Expose the port the app runs on (adjust if needed)
 EXPOSE 3000
 
-# Use node to run the application
-CMD ["npm", "index.js"]
+# Use npm to run the start script defined in package.json
+CMD ["npm", "start"]
