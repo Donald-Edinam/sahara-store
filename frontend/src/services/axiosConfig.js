@@ -9,4 +9,4 @@
 //     (res)
 // )
 
- export const API_ROUTE = 'https://sahara-store.up.railway.app';
+ export const API_ROUTE = 'https://saharastore-r11shdot.b4a.run/';
