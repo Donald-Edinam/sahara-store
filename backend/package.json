@@ -24,7 +24,7 @@
     "flutterwave-node-v3": "^1.1.10",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.8.0",
-    "mongoose": "^8.5.2"
+    "mongoose": "^8.24.7"
   },
   "devDependencies": {
     "chai": "^5.1.1",
